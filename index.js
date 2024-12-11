@@ -2,6 +2,12 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { probarConexion } from './config/database.js'
+import CategoriasRutas from './routes/categorias.js'
+import ClientesRutas from './routes/clientes.js'
+import EstadosRutas from './routes/estados.js'
+import OrdenesRutas from './routes/ordenes.js'
+import ProductosRutas from './routes/productos.js'
+import UsuariosRutas from './routes/usuarios.js'
 
 // Cargar variables de entorno
 dotenv.config()
@@ -15,6 +21,14 @@ app.use(cors()) // Para permitir peticiones desde cualquier origen
 app.use(express.json()) // Para que pueda recibir JSON en el body de las peticiones
 
 // Rutas
+app.use('/categorias', CategoriasRutas)
+app.use('/productos', ProductosRutas)
+app.use('/clientes', ClientesRutas)
+app.use('/estados', EstadosRutas)
+app.use('/ordenes', OrdenesRutas)
+app.use('/usuarios', UsuariosRutas)
+
+// Ruta básica
 app.get('/', (req, res) => {
   res.send('🌐 Hola Mundo - Desafío 360°')
 })
