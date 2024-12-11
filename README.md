@@ -12,18 +12,19 @@ Este proyecto es el backend de la aplicación 360, el cual se encarga de la gest
 Reto segunda semana:
 
 1. Instalación de NodeJs,Express, POSTMAN, Repositorio de GitHub
-2. Crear un API-REST para el proyecto final enlazado a la base de datos creada en la primera semana.
-   2.1. Creación de Enpoints
-   - CRUD de Productos: Inserción/Actualización
-   - CRUD de Categorias de Productos: Inserción/Actualización
-   - CRUD de Estados: Inserción/Actualización
-   - CRUD de Usuarios: Inserción/Actualización (encriptar contraseña)
-   - CRUD de Orden/Detalles, este es el unico CRUD donde se implementa un maestro detalle: Inserción/Actualización (Solo Encabezado)
-   - CRUD de Clientes: Inserción/Actualización
+2. Crear un API-REST para el proyecto final enlazado a la base de datos creada
+   en la primera semana.
+   - Creación de Enpoints
+   1. CRUD de Productos: Inserción/Actualización
+   2. CRUD de Categorias de Productos: Inserción/Actualización
+   3. CRUD de Estados: Inserción/Actualización
+   4. CRUD de Usuarios: Inserción/Actualización (encriptar contraseña)
+   5. CRUD de Orden/Detalles, este es el unico CRUD donde se implementa un maestro detalle: Inserción/Actualización (Solo Encabezado)
+   6. CRUD de Clientes: Inserción/Actualización
 3. Seguridad del API: Agregar autenticación al sistema
-   - realizarlo mediante JSON web token
-   - agregar gestión de sesiones de usuario
-   - validar cada transacción que se haga al API con un token valido, expirar los tokens en 24 horas
+   1. realizarlo mediante JSON web token
+   2. agregar gestión de sesiones de usuario
+   3. validar cada transacción que se haga al API con un token valido, expirar los tokens en 24 horas
 4. Validar los endpoint utilizando POSTMAN
 5. Adjuntar LINK de repositorio publico de GITHUB
 6. Adjuntar script de la base de datos actualizada con los registros de pruebas realizados.
