@@ -72,3 +72,12 @@ Para ejecutar el proyecto en modo desarrollo, se debe correr el siguiente comand
 ```bash
 npm run dev
 ```
+
+## Endpoints
+
+/categorias (GET, POST, PUT, DELETE)
+/productos (GET, POST, PUT, DELETE)
+/estados (GET, POST, PUT, DELETE)
+/usuarios (GET, POST, PUT, DELETE)
+/clientes (GET, POST, PUT, DELETE)
+/ordenes (GET, POST, PUT, DELETE)
