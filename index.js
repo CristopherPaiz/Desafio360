@@ -1,7 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+// Configuración de la base de datos
 import { probarConexion } from './config/database.js'
+// Rutas
 import CategoriasRutas from './routes/categorias.js'
 import ClientesRutas from './routes/clientes.js'
 import EstadosRutas from './routes/estados.js'
