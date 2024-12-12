@@ -12,8 +12,7 @@ Este proyecto es el backend de la aplicación 360, el cual se encarga de la gest
 Reto segunda semana:
 
 1. Instalación de NodeJs,Express, POSTMAN, Repositorio de GitHub
-2. Crear un API-REST para el proyecto final enlazado a la base de datos creada
-   en la primera semana.
+2. Crear un API-REST para el proyecto final enlazado a la base de datos creada en la primera semana.
    - Creación de Enpoints
    1. CRUD de Productos: Inserción/Actualización
    2. CRUD de Categorias de Productos: Inserción/Actualización
