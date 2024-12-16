@@ -72,11 +72,102 @@ Para ejecutar el proyecto en modo desarrollo, se debe correr el siguiente comand
 npm run dev
 ```
 
-## Endpoints
+## Endpoints de la API
 
-/categorias (GET, POST, PUT, DELETE)
-/productos (GET, POST, PUT, DELETE)
-/estados (GET, POST, PUT, DELETE)
-/usuarios (GET, POST, PUT, DELETE)
-/clientes (GET, POST, PUT, DELETE)
-/ordenes (GET, POST, PUT, DELETE)
+### Resumen de Rutas
+
+| Recurso      | Endpoints Disponibles                   |
+|--------------|------------------------------------------|
+| Productos    | GET, POST, PUT (Actualizar, Eliminar)   |
+| Categorías   | GET, POST, PUT, DELETE                  |
+| Estados      | GET, POST, PUT, DELETE                  |
+| Usuarios     | GET, POST, PUT, DELETE                  |
+| Clientes     | GET, POST, PUT, DELETE                  |
+| Órdenes      | GET, POST, PUT, DELETE                  |
+
+## Gestión de Productos
+
+### Consulta de Productos
+
+#### Obtener Todos los Productos
+- **Método:** `GET /productos`
+- **Descripción:** Recupera la lista completa de productos
+- **URL:** `localhost:3000/productos`
+- **Stored Procedure:** `sp_LeerProductos`
+
+#### Filtrar Productos
+- **Método:** `GET /productos?params`
+- **Descripción:** Permite filtrar productos por nombre, categoría y estado
+- **Parámetros:**
+  - `nombre`: Filtro por nombre del producto
+  - `categoria`: Filtro por categoría
+  - `estado`: Filtro por estado
+- **Ejemplo:** `localhost:3000/productos?nombre=Laptop&categoria=1&estado=1`
+- **Stored Procedure:** `sp_LeerProductosFiltrados`
+
+### Creación de Productos
+
+#### Crear Nuevo Producto
+- **Método:** `POST /productos`
+- **URL:** `localhost:3000/productos`
+- **Stored Procedure:** `sp_InsertarProducto`
+
+**Ejemplo de Solicitud:**
+```json
+{
+  "CategoriaProductos_idCategoriaProductos": 1,
+  "usuarios_idusuarios": 1,
+  "nombre": "Laptop HP",
+  "marca": "HP",
+  "codigo": "HP1234",
+  "stock": 50,
+  "estados_idestados": 1,
+  "precio": 500.0,
+  "foto": "url-a-la-imagen.jpg"
+}
+```
+
+### Actualización de Productos
+
+#### Actualizar Producto
+- **Método:** `PUT /productos/:id`
+- **Descripción:** Actualización parcial o total de un producto
+- **URL:** `localhost:3000/productos/1`
+- **Stored Procedure:** `sp_ActualizarProducto`
+
+**Ejemplo de Solicitud (Actualización Parcial):**
+```json
+{
+  "nombre": "Laptop HP Editada",
+  "stock": 10,
+  "precio": 500.0
+}
+```
+
+**Ejemplo de Solicitud (Actualización Completa):**
+```json
+{
+  "CategoriaProductos_idCategoriaProductos": 1,
+  "usuarios_idusuarios": 1,
+  "nombre": "Laptop HP Editada",
+  "marca": "HP",
+  "codigo": "HP1234Edit",
+  "stock": 10,
+  "precio": 500.0,
+  "foto": "url-a-la-imagen.jpg"
+}
+```
+
+### Gestión de Estado de Productos
+
+#### Desactivar Producto
+- **Método:** `PUT /productos/eliminar/:id`
+- **URL:** `localhost:3000/productos/eliminar/1`
+- **Stored Procedure:** `sp_CambiarEstadoProducto`
+- **Descripción:** Cambia el estado del producto a inactivo
+
+#### Restaurar Producto
+- **Método:** `PUT /productos/restaurar/:id`
+- **URL:** `localhost:3000/productos/restaurar/1`
+- **Stored Procedure:** `sp_CambiarEstadoProducto`
+- **Descripción:** Reactiva un producto previamente desactivado
