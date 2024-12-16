@@ -40,6 +40,10 @@ const ERRORES = {
     codigo: 400,
     mensaje: (campo) => `Formato inválido para ${campo}`
   },
+  REQUIRED_FIELDS: {
+    codigo: 400,
+    mensaje: (campo) => `${campo} campos son requeridos`
+  },
 
   // Errores de autenticación y autorización
   UNAUTHORIZED: {
@@ -93,7 +97,7 @@ const TipoError = (recurso, tipo) => {
 }
 
 // RETORNAMOS EL ERROR CON EL CODIGO Y EL MENSAJE
-const RetornarError = (res, error) => {
+const RetornarError = (res, error, errorSistema) => {
   if (error.codigo && error.mensaje) {
     return res.status(error.codigo).json({
       codigo: error.codigo,
@@ -105,7 +109,7 @@ const RetornarError = (res, error) => {
   console.error(error)
   res.status(500).json({
     codigo: 500,
-    mensaje: 'Error interno del servidor'
+    mensaje: errorSistema ?? 'Error interno del servidor'
   })
 }
 
