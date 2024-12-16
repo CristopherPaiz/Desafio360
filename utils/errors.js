@@ -72,7 +72,7 @@ const ERRORES = {
   },
 
   // Error general
-  INVALID_FIELDS: {
+  GENERAL_ERROR: {
     codigo: 400,
     mensaje: (campo) => `${campo}`
   }
