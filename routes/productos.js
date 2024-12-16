@@ -249,7 +249,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // Eliminar un producto: sp_CambiarEstadoProducto
-// localhost:3000/EliminarProductos/1
+// localhost:3000/eliminar/1
 
 router.put('/eliminar/:id', async (req, res) => {
   try {
