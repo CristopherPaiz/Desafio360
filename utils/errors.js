@@ -69,6 +69,12 @@ const ERRORES = {
   CONNECTION_ERROR: {
     codigo: 503,
     mensaje: (servicio) => `No se pudo conectar con ${servicio}`
+  },
+
+  // Error general
+  INVALID_FIELDS: {
+    codigo: 400,
+    mensaje: (campo) => `${campo}`
   }
 }
 
