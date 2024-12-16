@@ -8,6 +8,4 @@ router.get('/', async (req, res) => {
   res.send('Clientes')
 })
 
-// Aquí puedes agregar POST, PUT y DELETE más adelante.
-
 export default router

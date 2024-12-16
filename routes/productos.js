@@ -6,10 +6,9 @@ const router = express.Router()
 // /////////////////////////// GETS /////////////////////////////
 router.get('/', async (req, res) => {
   try {
-    const productos = await conexionBD.query(
-      'SELECT * FROM VistaProductosActivosConStockMayorACero',
-      { type: conexionBD.QueryTypes.SELECT }
-    )
+    const productos = await conexionBD.query('sp_LeerProductos', {
+      type: conexionBD.QueryTypes.SELECT
+    })
 
     // ERRORES
     if (!productos.length) {
@@ -23,7 +22,5 @@ router.get('/', async (req, res) => {
     RetornarError(res, error)
   }
 })
-
-// Aquí puedes agregar POST, PUT y DELETE más adelante.
 
 export default router
