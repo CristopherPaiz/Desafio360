@@ -76,26 +76,28 @@ npm run dev
 
 ### Resumen de Rutas
 
-| Recurso      | Endpoints Disponibles                   |
-|--------------|------------------------------------------|
-| Productos    | GET, POST, PUT (Actualizar, Eliminar)   |
-| Categorías   | GET, POST, PUT, DELETE                  |
-| Estados      | GET, POST, PUT, DELETE                  |
-| Usuarios     | GET, POST, PUT, DELETE                  |
-| Clientes     | GET, POST, PUT, DELETE                  |
-| Órdenes      | GET, POST, PUT, DELETE                  |
+| Recurso    | Endpoints Disponibles                  |
+| ---------- | -------------------------------------- |
+| Productos  | GET, POST, PUT (Actualizar, Eliminar)  |
+| Categorías | GET, POST, PUT, (Actualizar, Eliminar) |
+| Estados    | GET, POST, PUT, DELETE                 |
+| Usuarios   | GET, POST, PUT, DELETE                 |
+| Clientes   | GET, POST, PUT, DELETE                 |
+| Órdenes    | GET, POST, PUT, DELETE                 |
 
 ## Gestión de Productos
 
 ### Consulta de Productos
 
 #### Obtener Todos los Productos
+
 - **Método:** `GET /productos`
 - **Descripción:** Recupera la lista completa de productos
 - **URL:** `localhost:3000/productos`
 - **Stored Procedure:** `sp_LeerProductos`
 
 #### Filtrar Productos
+
 - **Método:** `GET /productos?params`
 - **Descripción:** Permite filtrar productos por nombre, categoría y estado
 - **Parámetros:**
@@ -108,11 +110,13 @@ npm run dev
 ### Creación de Productos
 
 #### Crear Nuevo Producto
+
 - **Método:** `POST /productos`
 - **URL:** `localhost:3000/productos`
 - **Stored Procedure:** `sp_InsertarProducto`
 
 **Ejemplo de Solicitud:**
+
 ```json
 {
   "CategoriaProductos_idCategoriaProductos": 1,
@@ -130,12 +134,14 @@ npm run dev
 ### Actualización de Productos
 
 #### Actualizar Producto
+
 - **Método:** `PUT /productos/:id`
 - **Descripción:** Actualización parcial o total de un producto
 - **URL:** `localhost:3000/productos/1`
 - **Stored Procedure:** `sp_ActualizarProducto`
 
 **Ejemplo de Solicitud (Actualización Parcial):**
+
 ```json
 {
   "nombre": "Laptop HP Editada",
@@ -145,6 +151,7 @@ npm run dev
 ```
 
 **Ejemplo de Solicitud (Actualización Completa):**
+
 ```json
 {
   "CategoriaProductos_idCategoriaProductos": 1,
@@ -161,13 +168,87 @@ npm run dev
 ### Gestión de Estado de Productos
 
 #### Desactivar Producto
+
 - **Método:** `PUT /productos/eliminar/:id`
 - **URL:** `localhost:3000/productos/eliminar/1`
 - **Stored Procedure:** `sp_CambiarEstadoProducto`
 - **Descripción:** Cambia el estado del producto a inactivo
 
 #### Restaurar Producto
+
 - **Método:** `PUT /productos/restaurar/:id`
 - **URL:** `localhost:3000/productos/restaurar/1`
 - **Stored Procedure:** `sp_CambiarEstadoProducto`
 - **Descripción:** Reactiva un producto previamente desactivado
+
+### Consulta de Categorías
+
+#### Obtener Todos las categorías
+
+- **Método:** `GET /categorias`
+- **Descripción:** Recupera la lista completa de las categorías
+- **URL:** `localhost:3000/categorias`
+- **Stored Procedure:** `sp_LeerCategoriaProductos`
+
+#### Filtrar Categorías
+
+- **Método:** `GET /categorias?params`
+- **Descripción:** Permite filtrar categorías por nombre, usuario_nombre...
+- **Parámetros:**
+  - `nombre`: Filtro por nombre de la categoría
+  - `usuario_nombre`: Filtro por nombre de usuario
+- **Ejemplo:** `localhost:3000/categorias/filtro?nombre=Electrónicos&usuario_nombre=Roberto Martínez`
+- **Stored Procedure:** `sp_LeerCategoriaProductosFiltradas`
+
+### Creación de una Categoría
+
+#### Crear Nueva Categoría
+
+- **Método:** `POST /categorias`
+- **URL:** `localhost:3000/categorías`
+- **Stored Procedure:** `sp_InsertarCategoriaProductos`
+
+**Ejemplo de Solicitud:**
+
+```json
+{
+  "usuarios_idusuarios": 1,
+  "nombre": "Línea Blanca",
+  "estados_idestados": 1
+}
+```
+
+### Actualización de un Categoría
+
+#### Actualizar Categoría
+
+- **Método:** `PUT /categorías/:id`
+- **Descripción:** Actualización parcial o total de una categoría
+- **URL:** `localhost:3000/categorías/1`
+- **Stored Procedure:** `sp_ActualizarCategoriaProductos`
+
+**Ejemplo de Solicitud (Actualización Parcial o completa):**
+
+```json
+{
+  "usuarios_idusuarios": 1,
+  "nombre" : "Línea Blanca",
+  "estados_idestados": 1
+}
+```
+
+### Gestión de Estado de una Categoría
+
+#### Desactivar Categoría
+
+- **Método:** `PUT /categorias/eliminar/:id`
+- **URL:** `localhost:3000/categorias/eliminar/1`
+- **Stored Procedure:** `sp_CambiarEstadoCategoriaProductos`
+- **Descripción:** Cambia el estado de la categoría a inactivo
+
+#### Restaurar Categoría
+
+- **Método:** `PUT /categorias/restaurar/:id`
+- **URL:** `localhost:3000/categorias/restaurar/1`
+- **Stored Procedure:** `sp_CambiarEstadoCategoriaProductos`
+- **Descripción:** Reactiva una categoría previamente desactivada

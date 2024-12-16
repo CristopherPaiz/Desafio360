@@ -150,7 +150,7 @@ router.post('/', async (req, res) => {
 // localhost:3000/categorias/5
 // {
 //   "usuarios_idusuarios": 1,
-//   "nombre" : "Línea Blanca"
+//   "nombre" : "Línea Blanca",
 //   "estados_idestados": 1
 // }
 router.put('/:id', async (req, res) => {
