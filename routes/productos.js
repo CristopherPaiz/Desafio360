@@ -250,7 +250,6 @@ router.put('/:id', async (req, res) => {
 
 // Eliminar un producto: sp_CambiarEstadoProducto
 // localhost:3000/eliminar/1
-
 router.put('/eliminar/:id', async (req, res) => {
   try {
     // Capturar el id del producto
@@ -287,7 +286,6 @@ router.put('/eliminar/:id', async (req, res) => {
 
 // Restaurar un producto: sp_CambiarEstadoProducto
 // localhost:3000/restaurar/1
-
 router.put('/restaurar/:id', async (req, res) => {
   try {
     // Capturar el id del producto
