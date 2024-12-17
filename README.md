@@ -76,14 +76,14 @@ npm run dev
 
 ### Resumen de Rutas
 
-| Recurso                                                                                             | Endpoints Disponibles                   |
-| --------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, (PUT: Update, Soft-Delete)   |
-| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, (PUT: Update, Soft-Delete)   |
-| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)       | GET, POST, PUT, (DELETE: Hard Delete ⚠) |
-| Usuarios                                                                                            | GET, POST, PUT, DELETE                  |
-| Clientes                                                                                            | GET, POST, PUT, DELETE                  |
-| Órdenes                                                                                             | GET, POST, PUT, DELETE                  |
+| Recurso                                                                                             | Endpoints Disponibles                     |
+| --------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, (PUT: Update, Soft-Delete)     |
+| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, (PUT: Update, Soft-Delete)     |
+| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)       | GET, POST, PUT, (DELETE: ⚠ Hard Delete ⚠) |
+| [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)      | GET, POST, (PUT: Update, Soft-Delete)     |
+| Clientes                                                                                            | GET, POST, PUT, DELETE                    |
+| Órdenes                                                                                             | GET, POST, PUT, DELETE                    |
 
 ## Gestión de Productos
 
@@ -282,4 +282,80 @@ npm run dev
 - **Método:** `DELETE /estados/:id`
 - **URL:** `localhost:3000/estados/7`
 - **Stored Procedure:** `sp_EliminarEstado`
-- **Descripción:** Elimina un estado de la base de datos HARD DELETE ⚠
+- **Descripción:** Elimina un estado de la base de datos ⚠⚠ HARD DELETE ⚠⚠
+
+## Gestion de Usuarios
+
+#### Obtener Todos los Usuarios
+
+- **Método:** `GET /usuarios`
+- **Descripción:** Recupera la lista completa de los usuarios
+- **URL:** `localhost:3000/usuarios`
+- **Stored Procedure:** `sp_LeerUsuarios`
+
+#### Filtrar Usuarios
+
+- **Método:** `GET /usuarios?params`
+- **Descripción:** Permite filtrar usuarios por nombre, correo electrónico, rol y estado
+- **Parámetros:**
+  - `nombre`: Filtro por nombre del usuario
+  - `rol`: Filtro por rol
+  - `estado`: Filtro por estado
+- **Ejemplo:** `localhost:3000/usuarios/filtro?nombre=Ana López&rol=Cliente&estado=Activo`
+- **Stored Procedure:** `sp_LeerUsuariosFiltrados`
+
+#### Crear Nuevo Usuario
+
+- **Método:** `POST /usuarios`
+- **URL:** `localhost:3000/usuarios`
+- **Stored Procedure:** `sp_InsertarUsuario`
+
+**Ejemplo de Solicitud:**
+
+```json
+{
+  "rol_idrol": 3,
+  "estados_idestados": 1,
+  "correo_electronico": "operador1@operador1.com",
+  "nombre_completo": "operador1",
+  "password": "op123",
+  "telefono": 55667788,
+  "fecha_nacimiento": "2001-10-10",
+  "Clientes_idClientes": NULL, // Si es administrador u operador no se pone, sino se pone el id del cliente
+}
+```
+
+#### Actualizar Usuario
+
+- **Método:** `PUT /usuarios/:id`
+- **Descripción:** Actualización parcial o total de un usuario
+- **URL:** `localhost:3000/usuarios/1`
+- **Stored Procedure:** `sp_ActualizarUsuario`
+
+**Ejemplo de Solicitud (Actualización Total):**
+
+```json
+{
+  "rol_idrol": 2,
+  "estados_idestados": 1,
+  "correo_electronico": "operador2@operador1.com",
+  "nombre_completo": "operador2",
+  "telefono": 55000000,
+  "fecha_nacimiento": "2001-10-10",
+  "Clientes_idClientes": 1
+}
+```
+
+#### Eliminar Usuario
+
+- **Método:** `PUT /usuarios/:id`
+- **URL:** `localhost:3000/usuarios/eliminar/1`
+- **Stored Procedure:** `sp_CambiarEstadoUsuario`
+- **Descripción:** Cambia el estado del usuario a inactivo
+
+#### Restaurar Usuario
+
+- **Método:** `PUT /usuarios/:id`
+- **URL:** `localhost:3000/usuarios/restaurar/1`
+- **Stored Procedure:** `sp_CambiarEstadoUsuario`
+- **Descripción:** Reactiva un usuario previamente desactivado
