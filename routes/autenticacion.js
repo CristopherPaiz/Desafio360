@@ -5,17 +5,28 @@ import { conexionBD } from '../config/database.js'
 
 const router = Router()
 
+// Obtener al usuario y sus datos para el login: sp_ObtenerDatosLogin
+// localhost:3000/auth/login
 router.post('/login', async (req, res) => {
   const { correo, contrasenia } = req.body
   try {
+    console.log('correo: ', correo)
+
+    if (!correo || !contrasenia) {
+      return res.status(401).json({
+        codigo: 401,
+        mensaje: 'El correo y la contraseña son requeridos'
+      })
+    }
+
     const [usuario] = await conexionBD.query(
-      'EXEC sp_LeerUsuariosFiltrados @correo_electronico = :correo',
+      'EXEC sp_ObtenerDatosLogin @correo_electronico = :correo',
       {
         replacements: { correo },
         type: conexionBD.QueryTypes.SELECT
       }
     )
-
+    console.log('usuario', usuario)
     // Verificar si el usuario existe
     if (!usuario) {
       return res
@@ -31,7 +42,7 @@ router.post('/login', async (req, res) => {
     }
 
     // CONTRASEÑA YA HASHEADA
-    const passwordValida = await bcrypt.compare(contrasenia, usuario.password)
+    const passwordValida = await bcrypt.compare(contrasenia, usuario.contraseña)
     if (!passwordValida) {
       return res.status(401).json({ mensaje: 'Credenciales inválidas' })
     }
