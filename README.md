@@ -76,14 +76,14 @@ npm run dev
 
 ### Resumen de Rutas
 
-| Recurso                                                                           | Endpoints Disponibles                  |
-| --------------------------------------------------------------------------------- | -------------------------------------- |
-| [Productos](/#gestión-de-productos)   | GET, POST, PUT (Actualizar, Eliminar)  |
-| [Categorías](/#gestión-de-categorías) | GET, POST, PUT, (Actualizar, Eliminar) |
-| Estados                                                                           | GET, POST, PUT, DELETE                 |
-| Usuarios                                                                          | GET, POST, PUT, DELETE                 |
-| Clientes                                                                          | GET, POST, PUT, DELETE                 |
-| Órdenes                                                                           | GET, POST, PUT, DELETE                 |
+| Recurso                                                                                             | Endpoints Disponibles                  |
+| --------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, PUT (Actualizar, Eliminar)  |
+| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, PUT, (Actualizar, Eliminar) |
+| Estados                                                                                             | GET, POST, PUT, DELETE                 |
+| Usuarios                                                                                            | GET, POST, PUT, DELETE                 |
+| Clientes                                                                                            | GET, POST, PUT, DELETE                 |
+| Órdenes                                                                                             | GET, POST, PUT, DELETE                 |
 
 ## Gestión de Productos
 
