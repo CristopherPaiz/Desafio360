@@ -181,6 +181,8 @@ npm run dev
 - **Stored Procedure:** `sp_CambiarEstadoProducto`
 - **Descripción:** Reactiva un producto previamente desactivado
 
+## Gestión de Categorías
+
 ### Consulta de Categorías
 
 #### Obtener Todos las categorías
@@ -232,7 +234,7 @@ npm run dev
 ```json
 {
   "usuarios_idusuarios": 1,
-  "nombre" : "Línea Blanca",
+  "nombre": "Línea Blanca",
   "estados_idestados": 1
 }
 ```
