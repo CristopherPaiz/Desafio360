@@ -76,18 +76,16 @@ npm run dev
 
 ### Resumen de Rutas
 
-| Recurso                                                                                             | Endpoints Disponibles                  |
-| --------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, PUT (Actualizar, Eliminar)  |
-| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, PUT, (Actualizar, Eliminar) |
-| Estados                                                                                             | GET, POST, PUT, DELETE                 |
-| Usuarios                                                                                            | GET, POST, PUT, DELETE                 |
-| Clientes                                                                                            | GET, POST, PUT, DELETE                 |
-| Órdenes                                                                                             | GET, POST, PUT, DELETE                 |
+| Recurso                                                                                             | Endpoints Disponibles                   |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, (PUT: Update, Soft-Delete)   |
+| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, (PUT: Update, Soft-Delete)   |
+| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)       | GET, POST, PUT, (DELETE: Hard Delete ⚠) |
+| Usuarios                                                                                            | GET, POST, PUT, DELETE                  |
+| Clientes                                                                                            | GET, POST, PUT, DELETE                  |
+| Órdenes                                                                                             | GET, POST, PUT, DELETE                  |
 
 ## Gestión de Productos
-
-### Consulta de Productos
 
 #### Obtener Todos los Productos
 
@@ -106,8 +104,6 @@ npm run dev
   - `estado`: Filtro por estado
 - **Ejemplo:** `localhost:3000/productos?nombre=Laptop&categoria=1&estado=1`
 - **Stored Procedure:** `sp_LeerProductosFiltrados`
-
-### Creación de Productos
 
 #### Crear Nuevo Producto
 
@@ -130,8 +126,6 @@ npm run dev
   "foto": "url-a-la-imagen.jpg"
 }
 ```
-
-### Actualización de Productos
 
 #### Actualizar Producto
 
@@ -165,8 +159,6 @@ npm run dev
 }
 ```
 
-### Gestión de Estado de Productos
-
 #### Desactivar Producto
 
 - **Método:** `PUT /productos/eliminar/:id`
@@ -182,8 +174,6 @@ npm run dev
 - **Descripción:** Reactiva un producto previamente desactivado
 
 ## Gestión de Categorías
-
-### Consulta de Categorías
 
 #### Obtener Todos las categorías
 
@@ -202,8 +192,6 @@ npm run dev
 - **Ejemplo:** `localhost:3000/categorias/filtro?nombre=Electrónicos&usuario_nombre=Roberto Martínez`
 - **Stored Procedure:** `sp_LeerCategoriaProductosFiltradas`
 
-### Creación de una Categoría
-
 #### Crear Nueva Categoría
 
 - **Método:** `POST /categorias`
@@ -219,8 +207,6 @@ npm run dev
   "estados_idestados": 1
 }
 ```
-
-### Actualización de un Categoría
 
 #### Actualizar Categoría
 
@@ -239,8 +225,6 @@ npm run dev
 }
 ```
 
-### Gestión de Estado de una Categoría
-
 #### Desactivar Categoría
 
 - **Método:** `PUT /categorias/eliminar/:id`
@@ -254,3 +238,48 @@ npm run dev
 - **URL:** `localhost:3000/categorias/restaurar/1`
 - **Stored Procedure:** `sp_CambiarEstadoCategoriaProductos`
 - **Descripción:** Reactiva una categoría previamente desactivada
+
+## Gestion de Estados
+
+#### Obtener Todos los estados
+
+- **Método:** `GET /estados`
+- **Descripción:** Recupera la lista completa de los estados
+- **URL:** `localhost:3000/estados`
+- **Stored Procedure:** `sp_LeerEstados`
+
+#### Crear Nuevo Estado
+
+- **Método:** `POST /estados`
+- **URL:** `localhost:3000/estados`
+- **Stored Procedure:** `sp_InsertarEstado`
+
+**Ejemplo de Solicitud:**
+
+```json
+{
+  "nombre": "Verificado"
+}
+```
+
+#### Actualizar Estado
+
+- **Método:** `PUT /estados/:id`
+- **Descripción:** Actualización total de un estado, únicamente el nombre
+- **URL:** `localhost:3000/estados/7`
+- **Stored Procedure:** `sp_ActualizarEstado`
+
+**Ejemplo de Solicitud (Actualización completa y única):**
+
+```json
+{
+  "nombre": "Ultra Verificado"
+}
+```
+
+#### Eliminar Estado
+
+- **Método:** `DELETE /estados/:id`
+- **URL:** `localhost:3000/estados/7`
+- **Stored Procedure:** `sp_EliminarEstado`
+- **Descripción:** Elimina un estado de la base de datos HARD DELETE ⚠
