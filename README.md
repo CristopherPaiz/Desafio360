@@ -78,8 +78,8 @@ npm run dev
 
 | Recurso                                                                           | Endpoints Disponibles                  |
 | --------------------------------------------------------------------------------- | -------------------------------------- |
-| [Productos](/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, PUT (Actualizar, Eliminar)  |
-| [Categorías](/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, PUT, (Actualizar, Eliminar) |
+| [Productos](/#gestión-de-productos)   | GET, POST, PUT (Actualizar, Eliminar)  |
+| [Categorías](/#gestión-de-categorías) | GET, POST, PUT, (Actualizar, Eliminar) |
 | Estados                                                                           | GET, POST, PUT, DELETE                 |
 | Usuarios                                                                          | GET, POST, PUT, DELETE                 |
 | Clientes                                                                          | GET, POST, PUT, DELETE                 |
