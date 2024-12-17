@@ -10,6 +10,7 @@ import EstadosRutas from './routes/estados.js'
 import OrdenesRutas from './routes/ordenes.js'
 import ProductosRutas from './routes/productos.js'
 import UsuariosRutas from './routes/usuarios.js'
+import AutenticacionRutas from './routes/autenticacion.js'
 
 // Cargar variables de entorno
 dotenv.config()
@@ -23,6 +24,8 @@ app.use(cors()) // Para permitir peticiones desde cualquier origen
 app.use(express.json()) // Para que pueda recibir JSON en el body de las peticiones
 
 // Rutas
+app.use('/auth', AutenticacionRutas)
+
 app.use('/categorias', CategoriasRutas)
 app.use('/productos', ProductosRutas)
 app.use('/clientes', ClientesRutas)
