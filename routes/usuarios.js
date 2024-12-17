@@ -274,7 +274,7 @@ router.put(
   }
 )
 
-// Eliminar un producto: sp_CambiarEstadoUsuario
+// Eliminar un usuario: sp_CambiarEstadoUsuario
 // localhost:3000/usuarios/eliminar/16
 router.put(
   '/eliminar/:id',
@@ -315,14 +315,14 @@ router.put(
   }
 )
 
-// Restaurar un producto: sp_CambiarEstadoUsuario
+// Restaurar un usuario: sp_CambiarEstadoUsuario
 // localhost:3000/restaurar/16
 router.put(
   '/restaurar/:id',
   Autorizar(['Administrador', 'Operador']),
   async (req, res) => {
     try {
-      // Capturar el id del producto
+      // Capturar el id del usuario
       const { id } = req.params
 
       // Construir los parámetros dinámicamente
