@@ -239,7 +239,7 @@ npm run dev
 - **Stored Procedure:** `sp_CambiarEstadoCategoriaProductos`
 - **Descripción:** Reactiva una categoría previamente desactivada
 
-## Gestion de Estados
+## Gestión de Estados
 
 #### Obtener Todos los estados
 
@@ -284,7 +284,7 @@ npm run dev
 - **Stored Procedure:** `sp_EliminarEstado`
 - **Descripción:** Elimina un estado de la base de datos ⚠⚠ HARD DELETE ⚠⚠
 
-## Gestion de Usuarios
+## Gestión de Usuarios
 
 #### Obtener Todos los Usuarios
 
