@@ -386,7 +386,7 @@ npm run dev
 - **Parámetros:**
   - `razon`: Filtro por razón social del cliente
   - `email`: Filtro por correo electrónico del cliente
-- **Ejemplo:** `localhost:3000/clientes/filtro?razon=Comercio
+- **Ejemplo:** `localhost:3000/clientes/filtro?razon=Comercio`
 - **Stored Procedure:** `sp_LeerClientesFiltrados`
 
 #### Crear Nuevo Cliente
