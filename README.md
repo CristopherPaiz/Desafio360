@@ -54,6 +54,7 @@ DB_NOMBRE=GDA00412-OT-CristopherPaiz
 DB_PUERTO=1433
 DB_USUARIO=sa
 DB_CONTRASENA=Administrador_123
+SALT_ROUNDS=10
 ```
 
 4. Crear la base de datos en SQL Server con el nombre `GDA00412-OT-CristopherPaiz`
