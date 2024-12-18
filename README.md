@@ -76,14 +76,14 @@ npm run dev
 
 ### Resumen de Rutas
 
-| Recurso                                                                                             | Endpoints Disponibles                     |
-| --------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, (PUT: Update, Soft-Delete)     |
-| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, (PUT: Update, Soft-Delete)     |
-| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)       | GET, POST, PUT, (DELETE: ⚠ Hard Delete ⚠) |
-| [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-usuarios)     | GET, POST, (PUT: Update, Soft-Delete)     |
-| Clientes                                                                                            | GET, POST, PUT, DELETE                    |
-| Órdenes                                                                                             | GET, POST, PUT, DELETE                    |
+| Recurso                                                                                             | Endpoints Disponibles                   |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, (PUT: Update, Soft-Delete)   |
+| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, (PUT: Update, Soft-Delete)   |
+| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)       | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) |
+| [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-usuarios)     | GET, POST, (PUT: Update, Soft-Delete)   |
+| [Clientes](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-clientes)     | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) |
+| Órdenes                                                                                             | GET, POST, PUT, DELETE                  |
 
 ## Gestión de Productos
 
@@ -282,7 +282,7 @@ npm run dev
 - **Método:** `DELETE /estados/:id`
 - **URL:** `localhost:3000/estados/7`
 - **Stored Procedure:** `sp_EliminarEstado`
-- **Descripción:** Elimina un estado de la base de datos ⚠⚠ HARD DELETE ⚠⚠
+- **Descripción:** Elimina un estado de la base de datos ⚠⚠⚠ HARD DELETE ⚠⚠⚠
 
 ## Gestión de Usuarios
 
@@ -359,3 +359,66 @@ npm run dev
 - **URL:** `localhost:3000/usuarios/restaurar/1`
 - **Stored Procedure:** `sp_CambiarEstadoUsuario`
 - **Descripción:** Reactiva un usuario previamente desactivado
+
+## Gestión de Clientes
+
+#### Obtener Todos los Clientes
+
+- **Método:** `GET /clientes`
+- **Descripción:** Recupera la lista completa de los clientes
+- **URL:** `localhost:3000/clientes`
+- **Stored Procedure:** `sp_LeerClientes`
+
+#### Filtrar Clientes
+
+- **Método:** `GET /clientes?params`
+- **Descripción:** Permite filtrar clientes por razon social o correo electrónico
+- **Parámetros:**
+  - `razon`: Filtro por razón social del cliente
+  - `email`: Filtro por correo electrónico del cliente
+- **Ejemplo:** `localhost:3000/clientes/filtro?razon=Comercio
+- **Stored Procedure:** `sp_LeerClientesFiltrados`
+
+#### Crear Nuevo Cliente
+
+- **Método:** `POST /clientes`
+- **URL:** `localhost:3000/clientes`
+- **Stored Procedure:** `sp_InsertarCliente`
+
+**Ejemplo de Solicitud:**
+
+```json
+{
+  "razon_social": "Comercial Sotz",
+  "nombre_comercial": "Comercio El Mero Sotz",
+  "direccion_entrega": "Zona 1, Guatemala",
+  "telefono": "55554444",
+  "email": "info@sotz.com"
+}
+```
+
+#### Actualizar Cliente
+
+- **Método:** `PUT /clientes/:id`
+- **Descripción:** Actualización parcial o total de un cliente
+- **URL:** `localhost:3000/clientes/1`
+- **Stored Procedure:** `sp_ActualizarCliente`
+
+**Ejemplo de Solicitud (Actualización Total):**
+
+```json
+{
+  "razon_social": "Comercial Sotz Actualizada",
+  "nombre_comercial": "Comercio El Mero Sotz Actualizado",
+  "direccion_entrega": "Zona 1, Guatemala",
+  "telefono": "55554444",
+  "email": "info@sotz.com"
+}
+```
+
+#### Eliminar Cliente
+
+- **Método:** `DELETE /clientes/:id`
+- **URL:** `localhost:3000/clientes/1`
+- **Stored Procedure:** `sp_EliminarCliente`
+- **Descripción:** Elimina un cliente de la base de datos ⚠⚠⚠ HARD DELETE ⚠⚠⚠
