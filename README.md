@@ -9,9 +9,7 @@ Este proyecto es el backend de la aplicación 360, el cual se encarga de la gest
 
 ## INSTRUCCIONES
 
-Reto segunda semana:
-
-# Proyecto Final: API REST
+**Reto segunda semana:**
 
 1. **Instalación de herramientas necesarias:**
 
