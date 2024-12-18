@@ -143,7 +143,7 @@ router.delete(
       // Ejecutar el SP con los parámetros
       const estado = await conexionBD.query(consultaSQL, {
         replacements: { idEstado: id },
-        type: conexionBD.QueryTypes.SELECT
+        type: conexionBD.QueryTypes.DELETE
       })
 
       // Verificar si se pudo eliminar el producto
@@ -160,4 +160,5 @@ router.delete(
     }
   }
 )
+
 export default router
