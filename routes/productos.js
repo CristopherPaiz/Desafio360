@@ -173,6 +173,110 @@ router.post('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
   }
 })
 
+// Leer productos paginados: sp_LeerProductosPaginados
+// localhost:3000/productos/paginado?page=1&size=10
+router.get('/paginado', Autorizar(['Todos']), async (req, res) => {
+  try {
+    // Capturar los parámetros de paginación de la URL
+    const pageNumber = parseInt(req.query.page) || 1
+    const pageSize = parseInt(req.query.size) || 10
+
+    // Construir los parámetros para el SP
+    const parametros = {
+      PageNumber: pageNumber,
+      PageSize: pageSize
+    }
+
+    // Ejecutar el SP
+    const result = await conexionBD.query(
+      'EXEC sp_LeerProductosPaginados @PageNumber = :PageNumber, @PageSize = :PageSize',
+      {
+        replacements: parametros,
+        type: conexionBD.QueryTypes.SELECT
+      }
+    )
+
+    // Verificar si hay resultados
+    if (!result || result.length === 0) {
+      throw TipoError('productos', 'NO_RESOURCES')
+    }
+
+    // Separar los productos de la información de paginación
+    const productos = result.slice(0, -1) // Todos los elementos excepto el último
+    const paginacionInfo = result[result.length - 1] // Último elemento
+
+    // Respuesta exitosa con productos y metadata de paginación
+    res.json({
+      productos,
+      paginacion: paginacionInfo
+    })
+  } catch (error) {
+    // Capturar los errores de la BD como los que retorna los SP o del servidor
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
+  }
+})
+
+// Leer productos filtrados y paginados: sp_LeerProductosFiltradosPaginados
+// localhost:3000/productos/filtro-paginado?page=1&size=10&nombre=Laptop&categoria_nombre=Electrónicos
+router.get('/filtro-paginado', Autorizar(['Todos']), async (req, res) => {
+  try {
+    // Capturar los parámetros de paginación y filtros de la URL
+    const pageNumber = parseInt(req.query.page) || 1
+    const pageSize = parseInt(req.query.size) || 10
+
+    // Capturar los filtros
+    const filtros = {
+      PageNumber: pageNumber,
+      PageSize: pageSize,
+      nombre: req.query.nombre,
+      marca: req.query.marca,
+      codigo: req.query.codigo,
+      categoria_nombre: req.query.categoria_nombre,
+      estado_nombre: req.query.estado_nombre
+    }
+
+    const params = {}
+    const condiciones = []
+
+    // Recorrer los filtros y agregarlos a la consulta
+    for (const [campo, valor] of Object.entries(filtros)) {
+      if (valor !== undefined && valor !== null) {
+        params[campo] = valor
+        condiciones.push(`@${campo} = :${campo}`)
+      }
+    }
+
+    // Construir la query y ejecutar el SP
+    const result = await conexionBD.query(
+      `EXEC sp_LeerProductosFiltradosPaginados ${condiciones.join(', ')}`,
+      {
+        replacements: params,
+        type: conexionBD.QueryTypes.SELECT
+      }
+    )
+
+    // Verificar si hay resultados
+    if (!result || result.length === 0) {
+      throw TipoError('productos', 'NO_RESOURCES')
+    }
+
+    // Separar los productos de la información de paginación
+    const productos = result.slice(0, -1) // Todos los elementos excepto el último
+    const paginacionInfo = result[result.length - 1] // Último elemento
+
+    // Respuesta exitosa con productos y metadata de paginación
+    res.json({
+      productos,
+      paginacion: paginacionInfo
+    })
+  } catch (error) {
+    // Capturar los errores de la BD como los que retorna los SP o del servidor
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
+  }
+})
+
 // /////////////////////////// PUT /////////////////////////////
 // Actualizar un producto: sp_ActualizarProducto
 // localhost:3000/productos/1
