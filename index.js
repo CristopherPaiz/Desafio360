@@ -14,6 +14,7 @@ import OrdenesRutas from './routes/ordenes.js'
 import ProductosRutas from './routes/productos.js'
 import UsuariosRutas from './routes/usuarios.js'
 import AutenticacionRutas from './routes/autenticacion.js'
+import ReportesRutas from './routes/reportes.js'
 
 // Cargar variables de entorno
 dotenv.config()
@@ -55,6 +56,7 @@ app.use('/clientes', ClientesRutas)
 app.use('/estados', EstadosRutas)
 app.use('/ordenes', OrdenesRutas)
 app.use('/usuarios', UsuariosRutas)
+app.use('/reportes', ReportesRutas)
 
 // Ruta básica
 app.get('/', (req, res) => {
