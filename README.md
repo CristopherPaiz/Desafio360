@@ -560,16 +560,6 @@ npm run dev
 - **URL:** `localhost:3000/ordenes/100`
 - **Stored Procedure:** `sp_EliminarOrden`
 
-# WebSockets
-
-Para la gestión de las órdenes y sus detalles, se ha implementado un sistema de WebSockets para notificar a los Administradores y operadores cuando una orden cambia de estado, por ejemplo, de Pendiente a Enviado, de Enviado a Tránsito o si se agregan nuevos detalles a una orden. Para esto, se han implementado los siguientes eventos:
-
-- `ordenes:list`: El más básico, se emite para que todos puedan ver la lista de órdenes
-- `ordenes:created`: Se emite cuando se crea una nueva orden
-- `ordenes:updated`: Se emite cuando se actualiza una orden en el encabezado, se agregan detalles.
-- `ordenes:statusChanged`: Se emite cuando se cambia el estado de una orden.
-- `ordenes:deleted`: Se emite cuando se elimina una orden.
-
 ## Gestión de Reportes
 
 #### Reporte: Total de Productos activos que tenga en stock mayor a 0
@@ -599,3 +589,13 @@ Para la gestión de las órdenes y sus detalles, se ha implementado un sistema d
 - **Descripción:** Recupera el top 10 de productos más vendidos en orden ascendente
 - **URL:** `localhost:3000/reportes/masVendidos`
 - **View:** `VistaTop10ProductosMasVendidos`
+
+# WebSockets
+
+Para la gestión de las órdenes y sus detalles, se ha implementado un sistema de WebSockets para notificar a los Administradores y operadores cuando una orden cambia de estado, por ejemplo, de Pendiente a Enviado, de Enviado a Tránsito o si se agregan nuevos detalles a una orden. Para esto, se han implementado los siguientes eventos:
+
+- `ordenes:list`: El más básico, se emite para que todos puedan ver la lista de órdenes
+- `ordenes:created`: Se emite cuando se crea una nueva orden
+- `ordenes:updated`: Se emite cuando se actualiza una orden en el encabezado, se agregan detalles.
+- `ordenes:statusChanged`: Se emite cuando se cambia el estado de una orden.
+- `ordenes:deleted`: Se emite cuando se elimina una orden.
