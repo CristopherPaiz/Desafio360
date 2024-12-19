@@ -10,8 +10,6 @@ const router = Router()
 router.post('/login', async (req, res) => {
   const { correo, contrasenia } = req.body
   try {
-    console.log('correo: ', correo)
-
     if (!correo || !contrasenia) {
       return res.status(401).json({
         codigo: 401,
@@ -26,7 +24,7 @@ router.post('/login', async (req, res) => {
         type: conexionBD.QueryTypes.SELECT
       }
     )
-    console.log('usuario', usuario)
+
     // Verificar si el usuario existe
     if (!usuario) {
       return res
