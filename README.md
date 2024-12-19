@@ -110,7 +110,7 @@ npm run dev
 | [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)            | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                 |
 | [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-usuarios)          | GET, POST, (PUT: Update, Soft-Delete)                   |
 | [Clientes](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-clientes)          | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                 |
-| [Órdenes y detalles](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-ordenes) | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) (📡 WebSockets) |
+| [Órdenes y detalles](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-órdenes) | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) (📡 WebSockets) |
 
 ## Gestión de Productos
 
