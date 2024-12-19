@@ -1,15 +1,32 @@
 # Proyecto Desafío 360° Backend (NodeJS)
 
-Este proyecto es el backend de la aplicación 360, el cual se encarga de la gestión de los datos de la aplicación Mi Tiendita Online.
+**Este proyecto es el backend de la aplicación 360, el cual se encarga de la gestión de los datos de la aplicación Mi Tiendita Online.**
+
+## Tabla de Contenidos
+
+- [Requisitos](#requisitos)
+- [Instrucciones](#instrucciones)
+  - [Dependencias usadas](##dependencias-usadas-en-el-proyecto)
+  - [Instalación y configuración](##instalación-y-configuración)
+  - [Ejecutar el proyecto](##ejecutar-el-proyecto)
+- [Endpoints de la API](##endpoints-de-la-api)
+  - [Tabla de resumen de las rutas](###resumen-de-rutas)
+  - [Gestión de Productos](##gestión-de-productos)
+  - [Gestión de Categorías](##gestión-de-categorías)
+  - [Gestión de Estados](##gestión-de-estados)
+  - [Gestión de Usuarios](##gestión-de-usuarios)
+  - [Gestión de Clientes](##gestión-de-clientes)
+  - [Gestión de Órdenes](##gestión-de-órdenes)
+- [WebSockets](#websockets)
 
 ## Requisitos
 
 - Node.js
 - SQL Server
 
-## INSTRUCCIONES
+# INSTRUCCIONES
 
-**Reto segunda semana:**
+## **Reto segunda semana:**
 
 1. **Instalación de herramientas necesarias:**
 
@@ -82,18 +99,18 @@ Para ejecutar el proyecto en modo desarrollo, se debe correr el siguiente comand
 npm run dev
 ```
 
-## Endpoints de la API
+# Endpoints de la API
 
 ### Resumen de Rutas
 
-| Recurso                                                                                             | Endpoints Disponibles                   |
-| --------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)   | GET, POST, (PUT: Update, Soft-Delete)   |
-| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías) | GET, POST, (PUT: Update, Soft-Delete)   |
-| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)       | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) |
-| [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-usuarios)     | GET, POST, (PUT: Update, Soft-Delete)   |
-| [Clientes](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-clientes)     | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) |
-| Órdenes                                                                                             | GET, POST, PUT, DELETE                  |
+| Recurso                                                                                                  | Endpoints Disponibles                                   |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)        | GET, POST, (PUT: Update, Soft-Delete)                   |
+| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías)      | GET, POST, (PUT: Update, Soft-Delete)                   |
+| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)            | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                 |
+| [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-usuarios)          | GET, POST, (PUT: Update, Soft-Delete)                   |
+| [Clientes](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-clientes)          | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                 |
+| [Órdenes y detalles](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-ordenes) | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) (📡 WebSockets) |
 
 ## Gestión de Productos
 
@@ -432,3 +449,121 @@ npm run dev
 - **URL:** `localhost:3000/clientes/1`
 - **Stored Procedure:** `sp_EliminarCliente`
 - **Descripción:** Elimina un cliente de la base de datos ⚠⚠⚠ HARD DELETE ⚠⚠⚠
+
+## Gestión de Órdenes
+
+#### Obtener Todas las Órdenes sin Detalles
+
+- **Método:** `GET /ordenes`
+- **Descripción:** Recupera la lista completa de las órdenes sin sus detalles
+- **URL:** `localhost:3000/ordenes`
+- **Stored Procedure:** `sp_LeerOrdenes`
+
+#### Obtener una orden con sus detalles
+
+- **Método:** `GET /ordenes/:id`
+- **Descripción:** Recupera una orden con sus detalles
+- **URL:** `localhost:3000/ordenes/100`
+- **Stored Procedure:** `sp_LeerOrdenPorId`
+
+#### Crear Nueva Orden con Detalles incluídos (Encabezado y Detalles)
+
+- **Método:** `POST /ordenes`
+- **Descripción:** Creación de una nueva orden con sus detalles incluídos
+- **URL:** `localhost:3000/ordenes`
+- **Stored Procedure:** `sp_InsertarOrden` y `sp_InsertarOrdenDetalle`
+
+**Ejemplo de Solicitud:**
+
+```json
+{
+  "usuarios_idusuarios": 3,
+  "estados_idestados": 4,
+  "nombre_completo": "Roberto Martínez",
+  "direccion": "Calle Falsa 123, Ciudad",
+  "telefono": "44440000",
+  "correo_electronico": "roberto@ejemplo.com",
+  "fecha_entrega": "2024-12-20",
+  "total_orden": 150.75,
+  "detalles": [
+    {
+      "Productos_idProductos": 8,
+      "cantidad": 2,
+      "precio": 50.25
+    },
+    {
+      "Productos_idProductos": 7,
+      "cantidad": 1,
+      "precio": 50.25
+    }
+  ]
+}
+```
+
+#### Añadir detalles a una orden existente
+
+- **Método:** `POST /ordenes/:id/detalles`
+- **Descripción:** Añadir detalles a una orden existente
+- **URL:** `localhost:3000/ordenes/100/detalles`
+- **Stored Procedure:** `sp_InsertarOrdenDetalle`
+
+**Ejemplo de Solicitud:**
+
+```json
+{
+  "Productos_idProductos": 8,
+  "cantidad": 2,
+  "precio": 50.25
+}
+```
+
+#### Actualizar Orden (Encabezado)
+
+- **Método:** `PUT /ordenes/:id`
+- **Descripción:** Actualización parcial o total de una orden
+- **URL:** `localhost:3000/ordenes/100`
+- **Stored Procedure:** `sp_ActualizarOrden`
+
+**Ejemplo de Solicitud (Actualización Total):**
+
+```json
+{
+  "estados_idestados": 4,
+  "nombre_completo": "Juan Pérez Actualizado",
+  "direccion": "Calle Falsa 123, Ciudad",
+  "telefono": "55664433",
+  "correo_electronico": "juan.perez@example.com",
+  "fecha_entrega": "2024-12-25",
+  "total_orden": 150.75
+}
+```
+
+#### Cambiar Estado de Orden
+
+- **Método:** `PUT /ordenes/estado/:id`
+- **Descripción:** Cambiar el estado de una orden Ej. de Pendiente -> Enviado -> Tránsito -> Entregado
+- **URL:** `localhost:3000/ordenes/estado/100`
+- **Stored Procedure:** `sp_CambiarEstadoOrden`
+
+```json
+{
+  "estados_idestados": 5
+}
+```
+
+#### Eliminar Orden ⚠⚠⚠⚠ HARD DELETE ⚠⚠⚠⚠ (Este método elimina la orden y regresa los productos al stock)
+
+- **Método:** `DELETE /ordenes/:id`
+- **Descripción:** Elimina una orden de la base de datos y regresa los productos al stock
+- **URL:** `localhost:3000/ordenes/100`
+- **Stored Procedure:** `sp_EliminarOrden`
+
+# WebSockets
+
+Para la gestión de las órdenes y sus detalles, se ha implementado un sistema de WebSockets para notificar a los Administradores y operadores cuando una orden cambia de estado, por ejemplo, de Pendiente a Enviado, de Enviado a Tránsito o si se agregan nuevos detalles a una orden. Para esto, se han implementado los siguientes eventos:
+
+- `ordenes:list`: El más básico, se emite para que todos puedan ver la lista de órdenes
+- `ordenes:created`: Se emite cuando se crea una nueva orden
+- `ordenes:updated`: Se emite cuando se actualiza una orden en el encabezado, se agregan detalles.
+- `ordenes:statusChanged`: Se emite cuando se cambia el estado de una orden.
+- `ordenes:deleted`: Se emite cuando se elimina una orden.
