@@ -10,7 +10,7 @@
   - [Instalación y configuración](#instalación-y-configuración)
   - [Ejecutar el proyecto](#ejecutar-el-proyecto)
 - [Endpoints de la API](#endpoints-de-la-api)
-  - [Tabla de resumen de las rutas](#tabla-de-resumen-de-las-rutas)
+  - [Tabla de resumen de las rutas](#resumen-de-rutas)
   - [Gestión de Productos](#gestión-de-productos)
   - [Gestión de Categorías](#gestión-de-categorías)
   - [Gestión de Estados](#gestión-de-estados)
