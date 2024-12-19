@@ -17,6 +17,7 @@
   - [Gestión de Usuarios](#gestión-de-usuarios)
   - [Gestión de Clientes](#gestión-de-clientes)
   - [Gestión de Órdenes](#gestión-de-órdenes)
+  - [Gestión de Reportes (Vistas)](#gestión-de-reportes)
 - [WebSockets](#websockets)
 
 ## Requisitos
@@ -103,14 +104,15 @@ npm run dev
 
 ### Resumen de Rutas
 
-| Recurso                                                                                                  | Endpoints Disponibles                                   |
-| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)        | GET, POST, (PUT: Update, Soft-Delete)                   |
-| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías)      | GET, POST, (PUT: Update, Soft-Delete)                   |
-| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)            | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                 |
-| [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-usuarios)          | GET, POST, (PUT: Update, Soft-Delete)                   |
-| [Clientes](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-clientes)          | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                 |
-| [Órdenes y detalles](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-órdenes) | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) (📡 WebSockets) |
+| Recurso                                                                                                             | Endpoints Disponibles                                      |
+| ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [Productos](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-productos)                   | GET, POST, (PUT: Update, Soft-Delete)                      |
+| [Categorías](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-categorías)                 | GET, POST, (PUT: Update, Soft-Delete)                      |
+| [Estados](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-estados)                       | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                    |
+| [Usuarios](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-usuarios)                     | GET, POST, (PUT: Update, Soft-Delete)                      |
+| [Clientes](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-clientes)                     | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠)                    |
+| [Órdenes y detalles](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-órdenes)            | GET, POST, PUT, (DELETE: ⚠Hard Delete⚠) (📡 WebSockets 📡) |
+| [Gestión de reportes (Vistas)](https://github.com/CristopherPaiz/Desafio360?tab=readme-ov-file#gestión-de-reportes) | GET                                                        |
 
 ## Gestión de Productos
 
@@ -557,6 +559,36 @@ npm run dev
 - **Descripción:** Elimina una orden de la base de datos y regresa los productos al stock
 - **URL:** `localhost:3000/ordenes/100`
 - **Stored Procedure:** `sp_EliminarOrden`
+
+## Gestión de Reportes
+
+#### Reporte: Total de Productos activos que tenga en stock mayor a 0
+
+- **Método:** `GET /reportes/activosConStock`
+- **Descripción:** Recupera el total de productos activos que tengan stock mayor a 0
+- **URL:** `localhost:3000/reportes/activosConStock`
+- **View:** `VistaProductosActivosConStockMayorACero`
+
+#### Reporte: Total de Quetzales en ordenes ingresadas en el mes de Agosto 2024
+
+- **Método:** `GET /reportes/ordenesAgosto`
+- **Descripción:** Recupera el total de quetzales en órdenes ingresadas en el mes de Agosto de 2024
+- **URL:** `localhost:3000/reportes/ordenesAgosto`
+- **View:** `VistaTotalOrdenesAgosto2024`
+
+#### Reporte: Top 10 de clientes con Mayor consumo de ordenes de todo el histórico
+
+- **Método:** `GET /reportes/clientesConsumo`
+- **Descripción:** Recupera el top 10 de clientes con mayor consumo de órdenes de todo el histórico
+- **URL:** `localhost:3000/reportes/clientesConsumo`
+- **View:** `VistaTop10ClientesMayorConsumo`
+
+#### Reporte: Top 10 de productos más vendidos en orden ascendente
+
+- **Método:** `GET /reportes/masVendidos`
+- **Descripción:** Recupera el top 10 de productos más vendidos en orden ascendente
+- **URL:** `localhost:3000/reportes/masVendidos`
+- **View:** `VistaTop10ProductosMasVendidos`
 
 # WebSockets
 
