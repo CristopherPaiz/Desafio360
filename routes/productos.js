@@ -296,7 +296,7 @@ router.post('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
 })
 
 // Crear un producto: sp_InsertarProducto
-// localhost:3000/productos
+// localhost:3000/productos/img
 // {
 //   "CategoriaProductos_idCategoriaProductos": 1,
 //   "usuarios_idusuarios": 1,
@@ -311,18 +311,18 @@ router.post('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
 router.post(
   '/img',
   Autorizar(['Administrador', 'Operador']),
-  upload.single('imagen'),
+  upload.single('imagen'), // Nombre del campo en el formulario
   async (req, res) => {
     try {
       // Verificar si se envió una imagen
       if (!req.file) {
-        throw TipoError('Imagen', 'REQUIRED_FIELDS')
+        throw TipoError('Imagen', 'REQUIRED_FIELD')
       }
 
-      // Subir la imagen procesada a Cloudinary
+      // Subir la imagen procesada a Cloudinary usando la función subirImagen que creamos
       const resultadoImagen = await subirImagen(req.file)
 
-      // Preparar los datos del producto con la URL de la imagen
+      // meter la url de la imagen en el body
       const datosProducto = {
         ...req.body,
         foto: resultadoImagen.url
@@ -371,14 +371,13 @@ router.post(
         type: conexionBD.QueryTypes.SELECT
       })
 
+      // Verificar si se pudo insertar el producto
       if (!producto || !producto.length) {
         throw TipoError('producto', 'NOT_CREATE')
       }
 
-      res.json({
-        ...producto[0],
-        imagenSize: resultadoImagen.size
-      })
+      // Respuesta exitosa
+      res.json({ ...producto[0] })
     } catch (error) {
       const ErrorDelSistema = error?.original?.message
       RetornarError(res, error, ErrorDelSistema)
