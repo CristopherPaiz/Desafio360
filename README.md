@@ -4,8 +4,8 @@
 
 ## Tabla de Contenidos
 
-- [Requisitos](#requisitos)
 - [Instrucciones](#instrucciones)
+  - [Requisitos](#requisitos)
   - [Dependencias usadas](#dependencias-usadas-en-el-proyecto)
   - [Instalación y configuración](#instalación-y-configuración)
   - [Ejecutar el proyecto](#ejecutar-el-proyecto)
@@ -19,11 +19,6 @@
   - [Gestión de Órdenes](#gestión-de-órdenes)
   - [Gestión de Reportes (Vistas)](#gestión-de-reportes)
 - [WebSockets](#websockets)
-
-## Requisitos
-
-- Node.js
-- SQL Server
 
 # INSTRUCCIONES
 
@@ -55,6 +50,11 @@
 
 6. **Adjuntar script de la base de datos actualizada con los registros de pruebas realizados.**
 
+## Requisitos
+
+- Node.js
+- SQL Server
+
 ## Dependencias usadas en el proyecto
 
 - Express
@@ -64,12 +64,16 @@
 - socket.io (Librería para manejar WebSockets)
 - dotenv (Librería para manejar variables de entorno)
 - cors (Librería para manejar CORS)
+- Multer (Librería para manejar archivos)
+- Cloudinary (Librería para subir imágenes a Cloudinary)
+- Sharp (Librería para redimensionar imágenes y reducir su peso)
 
 ## Instalación y configuración
 
 1. Clonar el repositorio
 2. Instalar las dependencias con `npm install`
-3. Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
+3. Crear la base de datos en SQL Server con el nombre `GDA00412-OT-CristopherPaiz` (El script de la base de datos se encuentra en la carpeta `db`)
+4. Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
 ```env
 # Configuración del Servidor
@@ -82,9 +86,11 @@ DB_PUERTO=1433
 DB_USUARIO=sa
 DB_CONTRASENA=Administrador_123
 SALT_ROUNDS=10
-```
 
-4. Crear la base de datos en SQL Server con el nombre `GDA00412-OT-CristopherPaiz`
+CLOUDINARY_CLOUD_NAME=drdkb6gjx1
+CLOUDINARY_API_KEY=1793119394629481
+CLOUDINARY_API_SECRET=pm16O5PHYkFhvb1fHuIOsQ9a1NU1
+```
 
 ## Ejecutar el proyecto
 
