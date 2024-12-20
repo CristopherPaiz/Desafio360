@@ -176,7 +176,7 @@ En el body va una propiedad llamada `imagen` que será de tipo file y el resto s
   "stock": 50,
   "estados_idestados": 1,
   "precio": 500.0,
-  "imagen": "TIPO FILE" // ATENCIÓN!!
+  "imagen": "TIPO FILE" // ATENCIÓN ESTE ARCHIVO CON LA ETIQUETA IMAGEN DEBE SER DE TIPO FILE
 }
 ```
 
