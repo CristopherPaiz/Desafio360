@@ -63,8 +63,9 @@
 ## 9. Gestión de imágenes (Cloudinary)
 
 - Subir un producto incluye:
-  1. Hacer fetch para Cloudinary y subir la imagen.
-  2. Obtener la URL y guardarla en la base de datos.
-  3. Crear un endpoint para subir la imagen.
-  4. Meter la URL en el body del producto.
-  5. Guardar el producto.
+  OK - Hacer fetch para Cloudinary y subir la imagen.
+  OK - Obtener la URL y guardarla en la base de datos.
+  OK - Crear un endpoint para subir la imagen.
+  OK - Meter la URL en el body del producto.
+  OK - Guardar el producto.
+  - Limpiar codigo y documentar
