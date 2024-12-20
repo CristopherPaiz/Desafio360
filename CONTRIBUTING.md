@@ -68,4 +68,4 @@
   OK - Crear un endpoint para subir la imagen.
   OK - Meter la URL en el body del producto.
   OK - Guardar el producto.
-  - Limpiar codigo y documentar
+  OK - Limpiar codigo y documentar
