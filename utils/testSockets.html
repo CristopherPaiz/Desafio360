@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monitor de Eventos - Sistema de Órdenes</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .controls {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+      }
+      .status {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .status.connected {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .status.disconnected {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+      .log {
+        height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background: #fff;
+      }
+      .event {
+        margin: 8px 0;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .event pre {
+        margin: 5px 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 3px;
+      }
+      .event-list {
+        background-color: #e3f2fd;
+      }
+      .event-created {
+        background-color: #e8f5e9;
+      }
+      .event-updated {
+        background-color: #fff3e0;
+      }
+      .event-deleted {
+        background-color: #ffebee;
+      }
+      .event-statusChanged {
+        background-color: #f3e5f5;
+      }
+      .timestamp {
+        color: #666;
+        font-size: 0.9em;
+      }
+      input[type="text"] {
+        padding: 8px;
+        width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 5px;
+        background: #007bff;
+        color: white;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      button.disconnect {
+        background: #dc3545;
+      }
+      button.disconnect:hover {
+        background: #c82333;
+      }
+      .event-type {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Monitor de Eventos del Sistema de Órdenes</h1>
+
+    <div class="controls">
+      <label>URL del Socket:</label>
+      <input type="text" id="socketUrl" value="http://localhost:3000" />
+      <button onclick="conectar()">Conectar</button>
+      <button class="disconnect" onclick="desconectar()">Desconectar</button>
+    </div>
+
+    <div id="status" class="status disconnected">Estado: Desconectado</div>
+    <div class="log" id="eventLog"></div>
+    <button onclick="document.getElementById('eventLog').innerHTML = ''">Limpiar Log</button>
+
+    <script>
+      let socket;
+
+      function conectar() {
+        const url = document.getElementById("socketUrl").value;
+        socket = io(url);
+
+        socket.on("connect", () => {
+          const statusEl = document.getElementById("status");
+          statusEl.textContent = "Estado: Conectado";
+          statusEl.className = "status connected";
+          logEvent("Sistema", "Conectado al servidor de eventos");
+        });
+
+        socket.on("disconnect", () => {
+          const statusEl = document.getElementById("status");
+          statusEl.textContent = "Estado: Desconectado";
+          statusEl.className = "status disconnected";
+          logEvent("Sistema", "Desconectado del servidor");
+        });
+
+        // Eventos de órdenes
+        socket.on("ordenes:list", (data) => {
+          logEvent("ordenes:list", data, "event-list");
+        });
+
+        socket.on("ordenes:created", (data) => {
+          logEvent("ordenes:created", data, "event-created");
+        });
+
+        socket.on("ordenes:updated", (data) => {
+          logEvent("ordenes:updated", data, "event-updated");
+        });
+
+        socket.on("ordenes:deleted", (data) => {
+          logEvent("ordenes:deleted", data, "event-deleted");
+        });
+
+        socket.on("ordenes:statusChanged", (data) => {
+          logEvent("ordenes:statusChanged", data, "event-statusChanged");
+        });
+      }
+
+      function desconectar() {
+        if (socket) {
+          socket.disconnect();
+        }
+      }
+
+      function logEvent(event, data, className = "") {
+        const log = document.getElementById("eventLog");
+        const entry = document.createElement("div");
+        entry.className = `event ${className}`;
+
+        const timestamp = new Date().toLocaleString();
+
+        entry.innerHTML = `
+          <div class="event-header">
+            <span class="event-type">${event}</span>
+            <span class="timestamp">${timestamp}</span>
+          </div>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+
+        log.insertBefore(entry, log.firstChild);
+      }
+    </script>
+  </body>
+</html>
