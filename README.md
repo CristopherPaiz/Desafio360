@@ -156,6 +156,30 @@ npm run dev
 }
 ```
 
+#### Crear nuevo Producto con Imagen (TIPO FILE)
+
+- **Método:** `POST /productos/img`
+- **URL:** `localhost:3000/productos/img`
+- **Stored Procedure:** `sp_InsertarProducto`
+
+**Ejemplo de Solicitud:**
+
+En el body va una propiedad llamada `imagen` que será de tipo file y el resto será normal como en el ejemplo anterior.
+
+```json
+{
+  "CategoriaProductos_idCategoriaProductos": 1,
+  "usuarios_idusuarios": 1,
+  "nombre": "Laptop HP",
+  "marca": "HP",
+  "codigo": "HP1234",
+  "stock": 50,
+  "estados_idestados": 1,
+  "precio": 500.0,
+  "imagen": "TIPO FILE" // ATENCIÓN!!
+}
+```
+
 #### Actualizar Producto
 
 - **Método:** `PUT /productos/:id`
