@@ -2,7 +2,25 @@ import express from 'express'
 import { conexionBD } from '../config/database.js'
 import { TipoError, RetornarError } from '../utils/errors.js'
 import { Autorizar } from '../middlewares/auth.js'
+// manejo de las imagenes
+import multer from 'multer'
+import { subirImagen } from '../utils/subirCloudinary.js'
 const router = express.Router()
+
+// /////////////////////////// MULTER /////////////////////////////
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10 mb maximo que igual lo reducimos más adelante
+  },
+  fileFilter: (req, file, cb) => {
+    // Error si el usaurio sube algo que no sea uina imagen
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Solo se permiten archivos de imagen'), false)
+    }
+    cb(null, true)
+  }
+})
 
 // /////////////////////////// GETS /////////////////////////////
 
@@ -78,94 +96,6 @@ router.get('/filtro', Autorizar(['Todos']), async (req, res) => {
 
     // Respuesta exitosa
     res.json(productos)
-  } catch (error) {
-    // Capturar los errores de la BD como los que retorna los SP o del servidor
-    const ErrorDelSistema = error?.original?.message
-    RetornarError(res, error, ErrorDelSistema)
-  }
-})
-
-// /////////////////////////// POST /////////////////////////////
-
-// Crear un producto: sp_InsertarProducto
-// localhost:3000/productos
-// {
-//   "CategoriaProductos_idCategoriaProductos": 1,
-//   "usuarios_idusuarios": 1,
-//   "nombre": "Laptop HP",
-//   "marca": "HP",
-//   "codigo": "HP1234",
-//   "stock": 50,
-//   "estados_idestados": 1,
-//   "precio": 500.00,
-//   "foto": "url-a-la-imagen.jpg"
-// }
-router.post('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
-  try {
-    // Capturar los datos del body
-    const {
-      CategoriaProductos_idCategoriaProductos,
-      usuarios_idusuarios,
-      nombre,
-      marca,
-      codigo,
-      stock,
-      estados_idestados,
-      precio,
-      foto
-    } = req.body
-
-    // Todos lo datos son requeridos
-    if (
-      !CategoriaProductos_idCategoriaProductos ||
-      !usuarios_idusuarios ||
-      !nombre ||
-      !marca ||
-      !codigo ||
-      !stock ||
-      !estados_idestados ||
-      !precio ||
-      !foto
-    ) {
-      throw TipoError('Todos', 'REQUIRED_FIELDS')
-    }
-
-    // Construir los parámetros dinámicamente
-    const parametros = {}
-    const condiciones = []
-
-    // Recorrer los datos del body y agregarlos a los parámetros
-    for (const [campo, valor] of Object.entries(req.body)) {
-      if (valor) {
-        parametros[campo] = valor
-        condiciones.push(`@${campo} = :${campo}`)
-      }
-    }
-
-    // Si no se proporcionan parámetros, devolver un error
-    if (condiciones.length === 0) {
-      throw TipoError(
-        'No se proporcionaron parámetros para crear el producto',
-        'GENERAL_ERROR'
-      )
-    }
-
-    // Construir la consulta SQL para ejecutar el SP
-    const consultaSQL = `EXEC sp_InsertarProducto ${condiciones.join(', ')}`
-
-    // Ejecutar el SP con los parámetros
-    const producto = await conexionBD.query(consultaSQL, {
-      replacements: parametros,
-      type: conexionBD.QueryTypes.SELECT
-    })
-
-    // Verificar si se pudo insertar el producto
-    if (!producto || !producto.length) {
-      throw TipoError('producto', 'NOT_CREATE')
-    }
-
-    // Respuesta exitosa
-    res.json(producto)
   } catch (error) {
     // Capturar los errores de la BD como los que retorna los SP o del servidor
     const ErrorDelSistema = error?.original?.message
@@ -276,6 +206,185 @@ router.get('/filtro-paginado', Autorizar(['Todos']), async (req, res) => {
     RetornarError(res, error, ErrorDelSistema)
   }
 })
+
+// /////////////////////////// POST /////////////////////////////
+
+// Crear un producto: sp_InsertarProducto
+// localhost:3000/productos
+// {
+//   "CategoriaProductos_idCategoriaProductos": 1,
+//   "usuarios_idusuarios": 1,
+//   "nombre": "Laptop HP",
+//   "marca": "HP",
+//   "codigo": "HP1234",
+//   "stock": 50,
+//   "estados_idestados": 1,
+//   "precio": 500.00,
+//   "foto": "url-a-la-imagen.jpg"
+// }
+router.post('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
+  try {
+    // Capturar los datos del body
+    const {
+      CategoriaProductos_idCategoriaProductos,
+      usuarios_idusuarios,
+      nombre,
+      marca,
+      codigo,
+      stock,
+      estados_idestados,
+      precio,
+      foto
+    } = req.body
+
+    // Todos lo datos son requeridos
+    if (
+      !CategoriaProductos_idCategoriaProductos ||
+      !usuarios_idusuarios ||
+      !nombre ||
+      !marca ||
+      !codigo ||
+      !stock ||
+      !estados_idestados ||
+      !precio ||
+      !foto
+    ) {
+      throw TipoError('Todos', 'REQUIRED_FIELDS')
+    }
+
+    // Construir los parámetros dinámicamente
+    const parametros = {}
+    const condiciones = []
+
+    // Recorrer los datos del body y agregarlos a los parámetros
+    for (const [campo, valor] of Object.entries(req.body)) {
+      if (valor) {
+        parametros[campo] = valor
+        condiciones.push(`@${campo} = :${campo}`)
+      }
+    }
+
+    // Si no se proporcionan parámetros, devolver un error
+    if (condiciones.length === 0) {
+      throw TipoError(
+        'No se proporcionaron parámetros para crear el producto',
+        'GENERAL_ERROR'
+      )
+    }
+
+    // Construir la consulta SQL para ejecutar el SP
+    const consultaSQL = `EXEC sp_InsertarProducto ${condiciones.join(', ')}`
+
+    // Ejecutar el SP con los parámetros
+    const producto = await conexionBD.query(consultaSQL, {
+      replacements: parametros,
+      type: conexionBD.QueryTypes.SELECT
+    })
+
+    // Verificar si se pudo insertar el producto
+    if (!producto || !producto.length) {
+      throw TipoError('producto', 'NOT_CREATE')
+    }
+
+    // Respuesta exitosa
+    res.json(producto)
+  } catch (error) {
+    // Capturar los errores de la BD como los que retorna los SP o del servidor
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
+  }
+})
+
+// Crear un producto: sp_InsertarProducto
+// localhost:3000/productos
+// {
+//   "CategoriaProductos_idCategoriaProductos": 1,
+//   "usuarios_idusuarios": 1,
+//   "nombre": "Laptop HP",
+//   "marca": "HP",
+//   "codigo": "HP1234",
+//   "stock": 50,
+//   "estados_idestados": 1,
+//   "precio": 500.00,
+//   "foto": "url-a-la-imagen.jpg"
+// }
+router.post(
+  '/img',
+  Autorizar(['Administrador', 'Operador']),
+  upload.single('imagen'),
+  async (req, res) => {
+    try {
+      // Verificar si se envió una imagen
+      if (!req.file) {
+        throw TipoError('Imagen', 'REQUIRED_FIELDS')
+      }
+
+      // Subir la imagen procesada a Cloudinary
+      const resultadoImagen = await subirImagen(req.file)
+
+      // Preparar los datos del producto con la URL de la imagen
+      const datosProducto = {
+        ...req.body,
+        foto: resultadoImagen.url
+      }
+
+      // Verificar todos los campos requeridos
+      const {
+        CategoriaProductos_idCategoriaProductos,
+        usuarios_idusuarios,
+        nombre,
+        marca,
+        codigo,
+        stock,
+        estados_idestados,
+        precio
+      } = datosProducto
+
+      if (
+        !CategoriaProductos_idCategoriaProductos ||
+        !usuarios_idusuarios ||
+        !nombre ||
+        !marca ||
+        !codigo ||
+        !stock ||
+        !estados_idestados ||
+        !precio
+      ) {
+        throw TipoError('Todos', 'REQUIRED_FIELDS')
+      }
+
+      // Construir los parámetros dinámicamente
+      const parametros = {}
+      const condiciones = []
+
+      for (const [campo, valor] of Object.entries(datosProducto)) {
+        if (valor) {
+          parametros[campo] = valor
+          condiciones.push(`@${campo} = :${campo}`)
+        }
+      }
+
+      // Construir y ejecutar la consulta SQL
+      const consultaSQL = `EXEC sp_InsertarProducto ${condiciones.join(', ')}`
+      const producto = await conexionBD.query(consultaSQL, {
+        replacements: parametros,
+        type: conexionBD.QueryTypes.SELECT
+      })
+
+      if (!producto || !producto.length) {
+        throw TipoError('producto', 'NOT_CREATE')
+      }
+
+      res.json({
+        ...producto[0],
+        imagenSize: resultadoImagen.size
+      })
+    } catch (error) {
+      const ErrorDelSistema = error?.original?.message
+      RetornarError(res, error, ErrorDelSistema)
+    }
+  }
+)
 
 // /////////////////////////// PUT /////////////////////////////
 // Actualizar un producto: sp_ActualizarProducto
