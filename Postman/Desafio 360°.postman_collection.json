@@ -1,0 +1,1454 @@
+{
+	"info": {
+		"_postman_id": "0f5d92f3-ca5b-45b7-b63a-9b7524c3a443",
+		"name": "Desafio 360°",
+		"description": "# ¡¡¡ ATENCION ORGANIZADORES DEL DESAFIO 360°!!!!\n### Antes de empezar\n\n1. Crea o importa las variables de entorno que dejé de muestra, son 3 únicamente:\n- URLBase: localhost\n- Puerto: 3000\n- Token: token_jwt_24h_validez\n\nSolo las puese como requisito por si luego quieren cambiarlas por otras y no tengan que cambiar luego todas las requests.\n\n2. **Inicia sesión** con la URL de login y copia el token.\n3. Cambia el valor de la variable de entorno con la clave `token` y sustituye el valor.\n4. Asegúrate de que las otras solicitudes (requests) sean válidas utilizando el nuevo token.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "[OBTENER TOKEN] LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"correo\": \"admin1@admin1.com\",\r\n    \"contrasenia\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/auth/login",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Todos] A1. Leer productos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Todos] A2. Leer productos Filtrados",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos/filtro?marca=Master&nombre=x5",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "marca",
+							"value": "Master"
+						},
+						{
+							"key": "nombre",
+							"value": "x5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Todos] A3. Leer productos Paginados",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos/paginado?page=1&size=2",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos",
+						"paginado"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Todos] A4. Leer productos Filtrados-Paginados",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos/filtro-paginado?page=1&size=10&nombre=Laptop&categoria_nombre=Electrónicos",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos",
+						"filtro-paginado"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "nombre",
+							"value": "Laptop"
+						},
+						{
+							"key": "categoria_nombre",
+							"value": "Electrónicos"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] A5. Agregar producto (IMG String)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"CategoriaProductos_idCategoriaProductos\": 1,\r\n  \"usuarios_idusuarios\": 1,\r\n  \"nombre\": \"Laptop HP\",\r\n  \"marca\": \"HP\",\r\n  \"codigo\": \"HP1234\",\r\n  \"stock\": 50,\r\n  \"estados_idestados\": 1,\r\n  \"precio\": 500.00,\r\n  \"foto\": \"url-a-la-imagen.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] A6. Agregar producto (IMG URL Cloudinary)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "imagen",
+							"type": "file",
+							"src": "/C:/Users/Cristopher/Desktop/imagen maiz.webp"
+						},
+						{
+							"key": "CategoriaProductos_idCategoriaProductos",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "usuarios_idusuarios",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "nombre",
+							"value": "Maiz del bueno",
+							"type": "default"
+						},
+						{
+							"key": "marca",
+							"value": "Azteca",
+							"type": "default"
+						},
+						{
+							"key": "codigo",
+							"value": "MA001",
+							"type": "default"
+						},
+						{
+							"key": "stock",
+							"value": "100",
+							"type": "default"
+						},
+						{
+							"key": "estados_idestados",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "precio",
+							"value": "50",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos/img",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos",
+						"img"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] A7. Actualizar producto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"CategoriaProductos_idCategoriaProductos\": 1,\r\n  \"usuarios_idusuarios\": 1,\r\n  \"nombre\": \"Laptop HP Editada\",\r\n  \"marca\": \"HP\",\r\n  \"codigo\": \"HP1234Edit\",\r\n  \"stock\": 10,\r\n  \"precio\": 500.00,\r\n  \"foto\": \"url-a-la-imagen.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos/9",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] A8. Eliminar (SOFT) producto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos/eliminar/9",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos",
+						"eliminar",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] A9. Restaurar producto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/productos/restaurar/9",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"productos",
+						"restaurar",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] B1. Leer categorías",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/categorias/filtro?nombre=Electrónicos&usuario_nombre=Roberto Martínez",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"categorias",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "nombre",
+							"value": "Electrónicos"
+						},
+						{
+							"key": "usuario_nombre",
+							"value": "Roberto Martínez"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] B2. Leer categorías Filtrado",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/categorias",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"categorias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] B3. Agregar categorias",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarios_idusuarios\": 1,\r\n  \"nombre\": \"Línea Blanca\",\r\n  \"estados_idestados\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/categorias",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"categorias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] B4. Actualizar categorias",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarios_idusuarios\": 1,\r\n  \"nombre\": \"Línea Blanca Actualizada\",\r\n  \"estados_idestados\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/categorias/5",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"categorias",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] B5. Eliminar (SOFT) categorias",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarios_idusuarios\": 1,\r\n  \"nombre\": \"Línea Blanca Actualizada\",\r\n  \"estados_idestados\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/categorias/eliminar/5",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"categorias",
+						"eliminar",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] B6. Restaurar categorias",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarios_idusuarios\": 1,\r\n  \"nombre\": \"Línea Blanca Actualizada\",\r\n  \"estados_idestados\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/categorias/restaurar/5",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"categorias",
+						"restaurar",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] C1. Leer estados",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/estados",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"estados"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] C2. Agregar estados",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Verificado\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/estados/7",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"estados",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] C3. Actualizar estados",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Verificadísimo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/estados/7",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"estados",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] C4. Eliminar (HARD) estados",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/estados/7",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"estados",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] D1. Leer Usuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/usuarios",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] D2. Leer Usuarios Filtrado",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/usuarios/filtro?nombre=Ana López&rol=Operador&estado=Activo",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"usuarios",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "nombre",
+							"value": "Ana López"
+						},
+						{
+							"key": "rol",
+							"value": "Operador"
+						},
+						{
+							"key": "estado",
+							"value": "Activo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] D3. Agregar Usuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"rol_idrol\": 1,\r\n  \"estados_idestados\": 1,\r\n  \"correo_electronico\": \"admin1000@admin1000.com\",\r\n  \"nombre_completo\": \"operador1\",\r\n  \"password\": \"admin1000\",\r\n  \"telefono\": 55667788,\r\n  \"fecha_nacimiento\": \"2001-10-10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/usuarios",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] D4. Actualizar Usuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"rol_idrol\": 2,\r\n  \"estados_idestados\": 1,\r\n  \"correo_electronico\": \"oeprador1000@oeprador1000.com\",\r\n  \"nombre_completo\": \"operador1\",\r\n  \"telefono\": 55667788,\r\n  \"fecha_nacimiento\": \"2001-10-10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/usuarios/16",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"usuarios",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] D5. Eliminar (SOFT) Usuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/usuarios/eliminar/16",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"usuarios",
+						"eliminar",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] D6. Restauirar Usuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/usuarios/restaurar/16",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"usuarios",
+						"restaurar",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] E1. Leer Ordenes Sin detalle",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/ordenes",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"ordenes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] E2. Leer Orden Con Detalles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/ordenes/20",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"ordenes",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] E3. Agregar orden con todo y detalles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarios_idusuarios\": 3,\r\n  \"estados_idestados\": 4,\r\n  \"nombre_completo\": \"Roberto Martínez\",\r\n  \"direccion\": \"Calle Falsa 123, Ciudad\",\r\n  \"telefono\": \"44440000\",\r\n  \"correo_electronico\": \"roberto@ejemplo.com\",\r\n  \"fecha_entrega\": \"2024-12-20\",\r\n  \"total_orden\": 150.75,\r\n  \"detalles\": [\r\n    {\r\n      \"Productos_idProductos\": 8,\r\n      \"cantidad\": 2,\r\n      \"precio\": 50.25\r\n    },\r\n    {\r\n      \"Productos_idProductos\": 7,\r\n      \"cantidad\": 1,\r\n      \"precio\": 50.25\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/ordenes",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"ordenes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] E4. Agregar detalle a una orden existente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Productos_idProductos\": 8,\r\n  \"cantidad\": 2,\r\n  \"precio\": 50.25\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/ordenes/22/detalles",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"ordenes",
+						"22",
+						"detalles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] E5. Actualizar encabezado Orden",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"estados_idestados\": 4,\r\n  \"nombre_completo\": \"Juan Pérez Actualizado\",\r\n  \"direccion\": \"Calle Falsa 123, Ciudad\",\r\n  \"telefono\": \"55664433\",\r\n  \"correo_electronico\": \"juan.perez@example.com\",\r\n  \"fecha_entrega\": \"2024-12-25\",\r\n  \"total_orden\": 150.75\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/ordenes/22",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"ordenes",
+						"22"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] E6. Actualizar estado Orden",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"estados_idestados\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/ordenes/estado/22",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"ordenes",
+						"estado",
+						"22"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] E7. Eliminar (HARD) ordenes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"estados_idestados\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/ordenes/22",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"ordenes",
+						"22"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] F1. Leer Clientes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/clientes",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] F2. Leer Clientes Filtrado",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/clientes/filtro?razon=comercio&email=info@globaltrade.com.gt",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"clientes",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "razon",
+							"value": "comercio"
+						},
+						{
+							"key": "email",
+							"value": "info@globaltrade.com.gt"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] F3. Agregar clientes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"razon_social\": \"Comercial Sotz\",\r\n  \"nombre_comercial\": \"Comercio El Mero Sotz\",\r\n  \"direccion_entrega\": \"Zona 1, Guatemala\",\r\n  \"telefono\": \"55554444\",\r\n  \"email\": \"info@sotz.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/clientes",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] F4. Actualizar clientes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"razon_social\": \"Comercial Putz\",\r\n  \"nombre_comercial\": \"Comercio El Mero Putz\",\r\n  \"direccion_entrega\": \"Zona 1, Guatemala\",\r\n  \"telefono\": \"55554444\",\r\n  \"email\": \"info@putz.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/clientes/16",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"clientes",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Operador] F4. Eliminar (HARD) clientes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBase}}:{{Puerto}}/clientes/16",
+					"host": [
+						"{{URLBase}}"
+					],
+					"port": "{{Puerto}}",
+					"path": [
+						"clientes",
+						"16"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
