@@ -80,11 +80,16 @@
 PORT=3000
 
 # Configuración de Base de Datos
+# Configuración del Servidor
+PORT=3000
+
+# Configuración de Base de Datos
 DB_HOST=localhost
 DB_NOMBRE=GDA00412-OT-CristopherPaiz
 DB_PUERTO=1433
 DB_USUARIO=sa
 DB_CONTRASENA=Administrador_123
+JWT_SECRET=password_360_backend
 SALT_ROUNDS=10
 
 CLOUDINARY_CLOUD_NAME=drdkb6gjx1
