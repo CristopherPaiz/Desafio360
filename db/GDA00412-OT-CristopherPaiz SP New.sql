@@ -1606,6 +1606,37 @@ BEGIN
 END
 GO
 
+-- Leer Productos por ID
+-- EXEC sp_LeerProductosPorID @idProducto = 1
+CREATE PROCEDURE sp_LeerProductosPorID
+    @idProducto INT
+AS
+BEGIN
+    BEGIN TRY
+        SELECT
+            p.idProductos,
+            p.nombre,
+            p.marca,
+            p.codigo,
+            p.stock,
+            p.precio,
+            p.foto,
+            cp.nombre AS categoria,
+            e.nombre AS estado
+        FROM Productos p
+        INNER JOIN CategoriaProductos cp ON p.CategoriaProductos_idCategoriaProductos = cp.idCategoriaProductos
+        INNER JOIN Estados e ON p.estados_idestados = e.idestados
+        WHERE p.idProductos = @idProducto
+        ORDER BY p.nombre;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+        DECLARE @ErrorState INT = ERROR_STATE();
+
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END
 
 -- #######################################################################################################################
 -- ###################################################### SP ORDEN #######################################################

@@ -46,6 +46,41 @@ router.get('/', Autorizar(['Todos']), async (req, res) => {
   }
 })
 
+// Leer un producto por ID: sp_LeerProductosPorID
+// localhost:3000/productos/1
+router.get('/id/:id', Autorizar(['Todos']), async (req, res) => {
+  try {
+    // Capturar el id del producto
+    const { id } = req.params
+
+    // Verificar si el id es un número
+    if (isNaN(id)) {
+      throw TipoError('id', 'INVALID_FORMAT')
+    }
+
+    // Ejecutar el SP con el id del producto
+    const producto = await conexionBD.query(
+      'sp_LeerProductosPorID @idProducto = :id',
+      {
+        replacements: { id },
+        type: conexionBD.QueryTypes.SELECT
+      }
+    )
+
+    // Si no hay productos, lanzamos un error
+    if (!producto.length) {
+      throw TipoError('producto', 'NO_RESOURCES')
+    }
+
+    // Respuesta exitosa
+    res.json(producto[0])
+  } catch (error) {
+    // Capturar los errores de la BD como los que retorna los SP o del servidor
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
+  }
+})
+
 // Leer Productos Filtrados: sp_LeerProductosFiltrados
 // localhost:3000/productos/filtro?marca=Master
 // localhost:3000/productos/filtro?nombre=Laptop
