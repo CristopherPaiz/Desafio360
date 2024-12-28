@@ -187,7 +187,7 @@ BEGIN
             RETURN;
         END
 
-        UPDATE Estados 
+        UPDATE Estados
         SET nombre = @nombre
         WHERE idestados = @idestados;
 
@@ -245,7 +245,7 @@ CREATE PROCEDURE sp_LeerEstados
 AS
 BEGIN
     BEGIN TRY
-        SELECT idestados, nombre 
+        SELECT idestados, nombre
         FROM Estados
         ORDER BY nombre;
     END TRY
@@ -310,7 +310,7 @@ BEGIN
             RETURN;
         END
 
-        UPDATE Rol 
+        UPDATE Rol
         SET nombre = @nombre
         WHERE idrol = @idrol;
 
@@ -365,7 +365,7 @@ CREATE PROCEDURE sp_LeerRoles
 AS
 BEGIN
     BEGIN TRY
-        SELECT idrol, nombre 
+        SELECT idrol, nombre
         FROM Rol
         ORDER BY nombre;
     END TRY
@@ -383,7 +383,7 @@ GO
 -- ##################################################### SP CLIENTES #####################################################
 -- #######################################################################################################################
 -- Insertar Cliente
--- EXEC sp_InsertarCliente 
+-- EXEC sp_InsertarCliente
 --     @razon_social = 'Empresa de Prueba S.A.',
 --     @nombre_comercial = 'Prueba Comercial',
 --     @direccion_entrega = 'Dirección de Entrega',
@@ -399,7 +399,7 @@ AS
 BEGIN
     BEGIN TRY
         -- Validar que no exista un cliente con el mismo email o razón social
-        IF EXISTS (SELECT 1 FROM Clientes 
+        IF EXISTS (SELECT 1 FROM Clientes
                    WHERE email = @email OR razon_social = @razon_social)
         BEGIN
             RAISERROR('Ya existe un cliente con este correo o razón social.', 16, 1);
@@ -407,17 +407,17 @@ BEGIN
         END
 
         INSERT INTO Clientes (
-            razon_social, 
-            nombre_comercial, 
-            direccion_entrega, 
-            telefono, 
+            razon_social,
+            nombre_comercial,
+            direccion_entrega,
+            telefono,
             email
         )
         VALUES (
-            @razon_social, 
-            @nombre_comercial, 
-            @direccion_entrega, 
-            @telefono, 
+            @razon_social,
+            @nombre_comercial,
+            @direccion_entrega,
+            @telefono,
             @email
         );
 
@@ -434,7 +434,7 @@ END
 GO
 
 -- Actualizar Cliente
--- EXEC sp_ActualizarCliente 
+-- EXEC sp_ActualizarCliente
 --     @idClientes = 1,
 --     @razon_social = 'Empresa Actualizada S.A.',
 --     @nombre_comercial = 'Nuevo Nombre Comercial',
@@ -459,7 +459,7 @@ BEGIN
         END
 
         -- Validar que no exista otro cliente con el mismo email o razón social
-        IF EXISTS (SELECT 1 FROM Clientes 
+        IF EXISTS (SELECT 1 FROM Clientes
                    WHERE (email = @email OR razon_social = @razon_social)
                    AND idClientes != @idClientes)
         BEGIN
@@ -467,8 +467,8 @@ BEGIN
             RETURN;
         END
 
-        UPDATE Clientes 
-        SET 
+        UPDATE Clientes
+        SET
             razon_social = @razon_social,
             nombre_comercial = @nombre_comercial,
             direccion_entrega = @direccion_entrega,
@@ -529,12 +529,12 @@ CREATE PROCEDURE sp_LeerClientes
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
-            idClientes, 
-            razon_social, 
-            nombre_comercial, 
-            direccion_entrega, 
-            telefono, 
+        SELECT
+            idClientes,
+            razon_social,
+            nombre_comercial,
+            direccion_entrega,
+            telefono,
             email
         FROM Clientes
         ORDER BY razon_social;
@@ -559,15 +559,15 @@ CREATE PROCEDURE sp_LeerClientesFiltrados
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
-            idClientes, 
-            razon_social, 
-            nombre_comercial, 
-            direccion_entrega, 
-            telefono, 
+        SELECT
+            idClientes,
+            razon_social,
+            nombre_comercial,
+            direccion_entrega,
+            telefono,
             email
         FROM Clientes
-        WHERE 
+        WHERE
             (@razon_social IS NULL OR razon_social LIKE '%' + @razon_social + '%')
             AND (@email IS NULL OR email LIKE '%' + @email + '%')
         ORDER BY razon_social;
@@ -586,13 +586,13 @@ GO
 -- ##################################################### SP USUARIOS #####################################################
 -- #######################################################################################################################
 -- Insertar Usuario
--- EXEC sp_InsertarUsuario 
---     @rol_idrol = 1, 
---     @estados_idestados = 1, 
---     @correo_electronico = 'usuario@ejemplo.com', 
---     @nombre_completo = 'Juan Pérez', 
---     @password = 'contraseñaHasheada', 
---     @telefono = '123456789', 
+-- EXEC sp_InsertarUsuario
+--     @rol_idrol = 1,
+--     @estados_idestados = 1,
+--     @correo_electronico = 'usuario@ejemplo.com',
+--     @nombre_completo = 'Juan Pérez',
+--     @password = 'contraseñaHasheada',
+--     @telefono = '123456789',
 --     @fecha_nacimiento = '1990-01-01',
 --     @Clientes_idClientes = NULL
 CREATE PROCEDURE sp_InsertarUsuario
@@ -629,7 +629,7 @@ BEGIN
         END
 
         -- Validar que el cliente exista si se proporciona
-        IF @Clientes_idClientes IS NOT NULL AND 
+        IF @Clientes_idClientes IS NOT NULL AND
            NOT EXISTS (SELECT 1 FROM Clientes WHERE idClientes = @Clientes_idClientes)
         BEGIN
             RAISERROR('El cliente especificado no existe.', 16, 1);
@@ -670,13 +670,13 @@ END
 GO
 
 -- Actualizar Usuario
--- EXEC sp_ActualizarUsuario 
+-- EXEC sp_ActualizarUsuario
 --     @idusuarios = 1,
---     @rol_idrol = 2, 
---     @estados_idestados = 2, 
---     @correo_electronico = 'nuevo.correo@ejemplo.com', 
---     @nombre_completo = 'Juan Pérez Actualizado', 
---     @telefono = '987654321', 
+--     @rol_idrol = 2,
+--     @estados_idestados = 2,
+--     @correo_electronico = 'nuevo.correo@ejemplo.com',
+--     @nombre_completo = 'Juan Pérez Actualizado',
+--     @telefono = '987654321',
 --     @fecha_nacimiento = '1990-01-01',
 --     @Clientes_idClientes = NULL
 CREATE PROCEDURE sp_ActualizarUsuario
@@ -713,8 +713,8 @@ BEGIN
         END
 
         -- Validar que no exista otro usuario con el mismo correo
-        IF EXISTS (SELECT 1 FROM Usuarios 
-                   WHERE correo_electronico = @correo_electronico 
+        IF EXISTS (SELECT 1 FROM Usuarios
+                   WHERE correo_electronico = @correo_electronico
                    AND idusuarios != @idusuarios)
         BEGIN
             RAISERROR('Ya existe otro usuario con este correo electrónico.', 16, 1);
@@ -722,15 +722,15 @@ BEGIN
         END
 
         -- Validar que el cliente exista si se proporciona
-        IF @Clientes_idClientes IS NOT NULL AND 
+        IF @Clientes_idClientes IS NOT NULL AND
            NOT EXISTS (SELECT 1 FROM Clientes WHERE idClientes = @Clientes_idClientes)
         BEGIN
             RAISERROR('El cliente especificado no existe.', 16, 1);
             RETURN;
         END
 
-        UPDATE Usuarios 
-        SET 
+        UPDATE Usuarios
+        SET
             rol_idrol = @rol_idrol,
             estados_idestados = @estados_idestados,
             correo_electronico = @correo_electronico,
@@ -754,8 +754,8 @@ GO
 
 -- Eliminar / Cambiar Estado de Usuario (Soft Delete)
 -- Para desactivar un usuario (cambiar a estado Inactivo)
--- EXEC sp_CambiarEstadoUsuario 
---     @idusuarios = 1, 
+-- EXEC sp_CambiarEstadoUsuario
+--     @idusuarios = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "Inactivo"
 CREATE PROCEDURE sp_CambiarEstadoUsuario
     @idusuarios INT,
@@ -777,7 +777,7 @@ BEGIN
             RETURN;
         END
 
-        UPDATE Usuarios 
+        UPDATE Usuarios
         SET estados_idestados = @estados_idestados
         WHERE idusuarios = @idusuarios;
 
@@ -800,7 +800,7 @@ CREATE PROCEDURE sp_LeerUsuarios
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             u.idusuarios,
             u.correo_electronico,
             u.nombre_completo,
@@ -827,13 +827,13 @@ GO
 
 -- Leer Usuarios Filtrados
 -- EXEC sp_LeerUsuariosFiltrados @nombre_completo = 'Juan'
--- EXEC sp_LeerUsuariosFiltrados @correo_electronico = 'admin1@admin1.com'       
+-- EXEC sp_LeerUsuariosFiltrados @correo_electronico = 'admin1@admin1.com'
 -- EXEC sp_LeerUsuariosFiltrados @rol_nombre = 'Administrador'
 -- EXEC sp_LeerUsuariosFiltrados @estado_nombre = 'Activo'
--- EXEC sp_LeerUsuariosFiltrados 
---     @nombre_completo = 'Juan', 
---     @correo_electronico = 'ejemplo', 
---     @rol_nombre = 'Administrador', 
+-- EXEC sp_LeerUsuariosFiltrados
+--     @nombre_completo = 'Juan',
+--     @correo_electronico = 'ejemplo',
+--     @rol_nombre = 'Administrador',
 --     @estado_nombre = 'Activo'
 CREATE PROCEDURE sp_LeerUsuariosFiltrados
     @nombre_completo NVARCHAR(45) = NULL,
@@ -843,7 +843,7 @@ CREATE PROCEDURE sp_LeerUsuariosFiltrados
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             u.idusuarios,
             u.correo_electronico,
             u.nombre_completo,
@@ -856,7 +856,7 @@ BEGIN
         INNER JOIN Rol r ON u.rol_idrol = r.idrol
         INNER JOIN Estados e ON u.estados_idestados = e.idestados
         LEFT JOIN Clientes c ON u.Clientes_idClientes = c.idClientes
-        WHERE 
+        WHERE
             (@nombre_completo IS NULL OR u.nombre_completo LIKE '%' + @nombre_completo + '%')
             AND (@correo_electronico IS NULL OR u.correo_electronico LIKE '%' + @correo_electronico + '%')
             AND (@rol_nombre IS NULL OR r.nombre = @rol_nombre)
@@ -882,7 +882,7 @@ AS
 BEGIN
     BEGIN TRY
         -- Traer solo los datos necesarios para el inicio de sesión
-        SELECT 
+        SELECT
             u.idusuarios AS id,
             u.correo_electronico AS usuario,
             u.password AS contraseña,
@@ -907,9 +907,9 @@ GO
 -- ############################################### SP CategoríaProducto ##################################################
 -- #######################################################################################################################
 -- Insertar Categoría de Productos
--- EXEC sp_InsertarCategoriaProductos 
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Electrónica', 
+-- EXEC sp_InsertarCategoriaProductos
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Electrónica',
 --     @estados_idestados = 1
 CREATE PROCEDURE sp_InsertarCategoriaProductos
     @usuarios_idusuarios INT,
@@ -933,7 +933,7 @@ BEGIN
         END
 
         -- Validar que no exista una categoría con el mismo nombre para este usuario
-        IF EXISTS (SELECT 1 FROM CategoriaProductos 
+        IF EXISTS (SELECT 1 FROM CategoriaProductos
                    WHERE nombre = @nombre AND usuarios_idusuarios = @usuarios_idusuarios)
         BEGIN
             RAISERROR('Ya existe una categoría con este nombre para este usuario.', 16, 1);
@@ -964,10 +964,10 @@ END
 GO
 
 -- Actualizar Categoría de Productos
--- EXEC sp_ActualizarCategoriaProductos 
+-- EXEC sp_ActualizarCategoriaProductos
 --     @idCategoriaProductos = 1,
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Electrónica Actualizada', 
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Electrónica Actualizada',
 --     @estados_idestados = 1
 CREATE PROCEDURE sp_ActualizarCategoriaProductos
     @idCategoriaProductos INT,
@@ -999,8 +999,8 @@ BEGIN
         END
 
         -- Validar que no exista otra categoría con el mismo nombre para este usuario
-        IF EXISTS (SELECT 1 FROM CategoriaProductos 
-                   WHERE nombre = @nombre 
+        IF EXISTS (SELECT 1 FROM CategoriaProductos
+                   WHERE nombre = @nombre
                    AND usuarios_idusuarios = @usuarios_idusuarios
                    AND idCategoriaProductos != @idCategoriaProductos)
         BEGIN
@@ -1008,8 +1008,8 @@ BEGIN
             RETURN;
         END
 
-        UPDATE CategoriaProductos 
-        SET 
+        UPDATE CategoriaProductos
+        SET
             usuarios_idusuarios = @usuarios_idusuarios,
             nombre = @nombre,
             estados_idestados = @estados_idestados
@@ -1028,8 +1028,8 @@ END
 GO
 
 -- Eliminar / Cambiar Estado de Categoría de Productos
--- EXEC sp_CambiarEstadoCategoriaProductos 
---     @idCategoriaProductos = 1, 
+-- EXEC sp_CambiarEstadoCategoriaProductos
+--     @idCategoriaProductos = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "Inactivo"
 CREATE PROCEDURE sp_CambiarEstadoCategoriaProductos
     @idCategoriaProductos INT,
@@ -1052,14 +1052,14 @@ BEGIN
         END
 
         -- Verificar si hay productos asociados a esta categoría
-        IF EXISTS (SELECT 1 FROM Productos 
+        IF EXISTS (SELECT 1 FROM Productos
                    WHERE CategoriaProductos_idCategoriaProductos = @idCategoriaProductos)
         BEGIN
             RAISERROR('No se puede cambiar el estado de la categoría porque tiene productos asociados.', 16, 1);
             RETURN;
         END
 
-        UPDATE CategoriaProductos 
+        UPDATE CategoriaProductos
         SET estados_idestados = @estados_idestados
         WHERE idCategoriaProductos = @idCategoriaProductos;
 
@@ -1081,7 +1081,7 @@ CREATE PROCEDURE sp_LeerCategoriaProductos
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             cp.idCategoriaProductos,
             cp.nombre,
             u.nombre_completo AS usuario,
@@ -1102,13 +1102,36 @@ BEGIN
 END
 GO
 
+-- Leer Categorías de Productos Activos (Para el Público)
+-- EXEC sp_LeerCategoriaProductosActivos
+CREATE PROCEDURE sp_LeerCategoriaProductosActivos
+AS
+BEGIN
+    BEGIN TRY
+        SELECT
+            cp.idCategoriaProductos,
+            cp.nombre
+        FROM CategoriaProductos cp
+        INNER JOIN Estados e ON cp.estados_idestados = e.idestados
+        WHERE e.nombre = 'Activo' -- Asegúrate de que "Activo" sea el valor correcto en tu tabla
+        ORDER BY cp.nombre;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+        DECLARE @ErrorState INT = ERROR_STATE();
+
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END
+
 -- Leer Categorías de Productos Filtradas
 -- EXEC sp_LeerCategoriaProductosFiltradas @nombre = 'Electrónicos'
 -- EXEC sp_LeerCategoriaProductosFiltradas @usuario_nombre = 'Roberto Martínez'
 -- EXEC sp_LeerCategoriaProductosFiltradas @estado_nombre = 'Activo'
--- EXEC sp_LeerCategoriaProductosFiltradas 
---     @nombre = 'Electrónicos', 
---     @usuario_nombre = 'Roberto Martínez', 
+-- EXEC sp_LeerCategoriaProductosFiltradas
+--     @nombre = 'Electrónicos',
+--     @usuario_nombre = 'Roberto Martínez',
 --     @estado_nombre = 'Activo'
 CREATE PROCEDURE sp_LeerCategoriaProductosFiltradas
     @nombre NVARCHAR(45) = NULL,
@@ -1117,7 +1140,7 @@ CREATE PROCEDURE sp_LeerCategoriaProductosFiltradas
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             cp.idCategoriaProductos,
             cp.nombre,
             u.nombre_completo AS usuario,
@@ -1126,7 +1149,7 @@ BEGIN
         FROM CategoriaProductos cp
         INNER JOIN Usuarios u ON cp.usuarios_idusuarios = u.idusuarios
         INNER JOIN Estados e ON cp.estados_idestados = e.idestados
-        WHERE 
+        WHERE
             (@nombre IS NULL OR cp.nombre LIKE '%' + @nombre + '%')
             AND (@usuario_nombre IS NULL OR u.nombre_completo LIKE '%' + @usuario_nombre + '%')
             AND (@estado_nombre IS NULL OR e.nombre = @estado_nombre)
@@ -1147,15 +1170,15 @@ GO
 -- #######################################################################################################################
 
 -- Insertar Producto
--- EXEC sp_InsertarProducto 
---     @CategoriaProductos_idCategoriaProductos = 1, 
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Laptop', 
---     @marca = 'Dell', 
---     @codigo = 'DELL-XPS-15', 
---     @stock = 10, 
---     @estados_idestados = 1, 
---     @precio = 1500.00, 
+-- EXEC sp_InsertarProducto
+--     @CategoriaProductos_idCategoriaProductos = 1,
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Laptop',
+--     @marca = 'Dell',
+--     @codigo = 'DELL-XPS-15',
+--     @stock = 10,
+--     @estados_idestados = 1,
+--     @precio = 1500.00,
 --     @foto = 'path/to/image.jpg'
 CREATE PROCEDURE sp_InsertarProducto
     @CategoriaProductos_idCategoriaProductos INT,
@@ -1234,16 +1257,16 @@ END
 GO
 
 -- Actualizar Producto
--- EXEC sp_ActualizarProducto 
+-- EXEC sp_ActualizarProducto
 --     @idProductos = 1,
---     @CategoriaProductos_idCategoriaProductos = 1, 
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Laptop Actualizada', 
---     @marca = 'Dell', 
---     @codigo = 'DELL-XPS-15-V2', 
---     @stock = 15, 
---     @estados_idestados = 1, 
---     @precio = 1600.00, 
+--     @CategoriaProductos_idCategoriaProductos = 1,
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Laptop Actualizada',
+--     @marca = 'Dell',
+--     @codigo = 'DELL-XPS-15-V2',
+--     @stock = 15,
+--     @estados_idestados = 1,
+--     @precio = 1600.00,
 --     @foto = 'path/to/new/image.jpg'
 CREATE PROCEDURE sp_ActualizarProducto
     @idProductos INT,
@@ -1267,14 +1290,14 @@ BEGIN
     END
 
     -- Verificaciones condicionales para referencias
-    IF @CategoriaProductos_idCategoriaProductos IS NOT NULL 
+    IF @CategoriaProductos_idCategoriaProductos IS NOT NULL
        AND NOT EXISTS (SELECT 1 FROM CategoriaProductos WHERE idCategoriaProductos = @CategoriaProductos_idCategoriaProductos)
     BEGIN
         RAISERROR('La categoría de producto especificada no existe.', 16, 1);
         RETURN;
     END
 
-    IF @usuarios_idusuarios IS NOT NULL 
+    IF @usuarios_idusuarios IS NOT NULL
        AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE idusuarios = @usuarios_idusuarios)
     BEGIN
         RAISERROR('El usuario especificado no existe.', 16, 1);
@@ -1282,8 +1305,8 @@ BEGIN
     END
 
     -- Validar código único
-    IF @codigo IS NOT NULL 
-       AND EXISTS (SELECT 1 FROM Productos 
+    IF @codigo IS NOT NULL
+       AND EXISTS (SELECT 1 FROM Productos
                    WHERE codigo = @codigo AND idProductos != @idProductos)
     BEGIN
         RAISERROR('Ya existe otro producto con este código.', 16, 1);
@@ -1292,7 +1315,7 @@ BEGIN
 
     -- Actualización dinámica
     UPDATE Productos
-    SET 
+    SET
         CategoriaProductos_idCategoriaProductos = COALESCE(@CategoriaProductos_idCategoriaProductos, CategoriaProductos_idCategoriaProductos),
         usuarios_idusuarios = COALESCE(@usuarios_idusuarios, usuarios_idusuarios),
         nombre = COALESCE(@nombre, nombre),
@@ -1309,8 +1332,8 @@ END
 GO
 
 -- Cambiar Estado de Producto
--- EXEC sp_CambiarEstadoProducto 
---     @idProductos = 1, 
+-- EXEC sp_CambiarEstadoProducto
+--     @idProductos = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "Inactivo"
 CREATE PROCEDURE sp_CambiarEstadoProducto
     @idProductos INT,
@@ -1332,7 +1355,7 @@ BEGIN
             RETURN;
         END
 
-        UPDATE Productos 
+        UPDATE Productos
         SET estados_idestados = @estados_idestados
         WHERE idProductos = @idProductos;
 
@@ -1356,7 +1379,7 @@ CREATE PROCEDURE sp_LeerProductos
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             p.idProductos,
             p.nombre,
             p.marca,
@@ -1389,9 +1412,9 @@ GO
 -- EXEC sp_LeerProductosFiltrados @codigo = 'DELL'
 -- EXEC sp_LeerProductosFiltrados @categoria_nombre = 'Electrónicos'
 -- EXEC sp_LeerProductosFiltrados @estado_nombre = 'Activo'
--- EXEC sp_LeerProductosFiltrados 
---     @nombre = 'Laptop', 
---     @marca = 'Dell', 
+-- EXEC sp_LeerProductosFiltrados
+--     @nombre = 'Laptop',
+--     @marca = 'Dell',
 --     @categoria_nombre = 'Electrónicos'
 CREATE PROCEDURE sp_LeerProductosFiltrados
     @nombre NVARCHAR(45) = NULL,
@@ -1402,7 +1425,7 @@ CREATE PROCEDURE sp_LeerProductosFiltrados
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             p.idProductos,
             p.nombre,
             p.marca,
@@ -1417,7 +1440,7 @@ BEGIN
         INNER JOIN CategoriaProductos cp ON p.CategoriaProductos_idCategoriaProductos = cp.idCategoriaProductos
         INNER JOIN Estados e ON p.estados_idestados = e.idestados
         INNER JOIN Usuarios u ON p.usuarios_idusuarios = u.idusuarios
-        WHERE 
+        WHERE
             (@nombre IS NULL OR p.nombre LIKE '%' + @nombre + '%')
             AND (@marca IS NULL OR p.marca LIKE '%' + @marca + '%')
             AND (@codigo IS NULL OR p.codigo LIKE '%' + @codigo + '%')
@@ -1447,22 +1470,22 @@ BEGIN
         -- Declarar variables para el conteo total
         DECLARE @TotalRows INT
         DECLARE @TotalPages INT
-        
+
         -- Obtener el número total de registros
         SELECT @TotalRows = COUNT(*)
         FROM Productos p
-        
+
         -- Calcular el total de páginas
         SET @TotalPages = CEILING(CAST(@TotalRows AS FLOAT) / @PageSize)
-        
+
         -- Asegurar que el número de página sea válido
-        IF @PageNumber < 1 
+        IF @PageNumber < 1
             SET @PageNumber = 1
-        IF @PageNumber > @TotalPages 
+        IF @PageNumber > @TotalPages
             SET @PageNumber = @TotalPages
-        
+
         -- Seleccionar los productos de la página actual
-        SELECT 
+        SELECT
             p.idProductos,
             p.nombre,
             p.marca,
@@ -1482,12 +1505,12 @@ BEGIN
         FETCH NEXT @PageSize ROWS ONLY;
 
         -- Devolver información de paginación
-        SELECT 
+        SELECT
             @PageNumber AS CurrentPage,
             @PageSize AS PageSize,
             @TotalPages AS TotalPages,
             @TotalRows AS TotalRecords;
-            
+
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
@@ -1499,7 +1522,7 @@ END
 GO
 
 -- Leer productos filtrados y paginados
--- EXEC sp_LeerProductosFiltradosPaginados 
+-- EXEC sp_LeerProductosFiltradosPaginados
 --     @PageNumber = 2,
 --     @PageSize = 10,
 --     @nombre = 'Laptop',
@@ -1518,30 +1541,30 @@ BEGIN
         -- Declarar variables para el conteo total
         DECLARE @TotalRows INT
         DECLARE @TotalPages INT
-        
+
         -- Obtener el número total de registros con filtros
         SELECT @TotalRows = COUNT(*)
         FROM Productos p
         INNER JOIN CategoriaProductos cp ON p.CategoriaProductos_idCategoriaProductos = cp.idCategoriaProductos
         INNER JOIN Estados e ON p.estados_idestados = e.idestados
-        WHERE 
+        WHERE
             (@nombre IS NULL OR p.nombre LIKE '%' + @nombre + '%')
             AND (@marca IS NULL OR p.marca LIKE '%' + @marca + '%')
             AND (@codigo IS NULL OR p.codigo LIKE '%' + @codigo + '%')
             AND (@categoria_nombre IS NULL OR cp.nombre = @categoria_nombre)
             AND (@estado_nombre IS NULL OR e.nombre = @estado_nombre);
-        
+
         -- Calcular el total de páginas
         SET @TotalPages = CEILING(CAST(@TotalRows AS FLOAT) / @PageSize)
-        
+
         -- Asegurar que el número de página sea válido
-        IF @PageNumber < 1 
+        IF @PageNumber < 1
             SET @PageNumber = 1
         IF @PageNumber > @TotalPages AND @TotalPages > 0
             SET @PageNumber = @TotalPages
-        
+
         -- Seleccionar los productos filtrados de la página actual
-        SELECT 
+        SELECT
             p.idProductos,
             p.nombre,
             p.marca,
@@ -1556,7 +1579,7 @@ BEGIN
         INNER JOIN CategoriaProductos cp ON p.CategoriaProductos_idCategoriaProductos = cp.idCategoriaProductos
         INNER JOIN Estados e ON p.estados_idestados = e.idestados
         INNER JOIN Usuarios u ON p.usuarios_idusuarios = u.idusuarios
-        WHERE 
+        WHERE
             (@nombre IS NULL OR p.nombre LIKE '%' + @nombre + '%')
             AND (@marca IS NULL OR p.marca LIKE '%' + @marca + '%')
             AND (@codigo IS NULL OR p.codigo LIKE '%' + @codigo + '%')
@@ -1567,12 +1590,12 @@ BEGIN
         FETCH NEXT @PageSize ROWS ONLY;
 
         -- Devolver información de paginación
-        SELECT 
+        SELECT
             @PageNumber AS CurrentPage,
             @PageSize AS PageSize,
             @TotalPages AS TotalPages,
             @TotalRows AS TotalRecords;
-            
+
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
@@ -1589,14 +1612,14 @@ GO
 -- #######################################################################################################################
 
 -- Insertar Orden
--- EXEC sp_InsertarOrden 
---     @usuarios_idusuarios = 1, 
---     @estados_idestados = 1, 
---     @nombre_completo = 'Juan Pérez', 
---     @direccion = 'Calle Principal 123', 
---     @telefono = '55551234', 
---     @correo_electronico = 'juan.perez@ejemplo.com', 
---     @fecha_entrega = '2024-02-15', 
+-- EXEC sp_InsertarOrden
+--     @usuarios_idusuarios = 1,
+--     @estados_idestados = 1,
+--     @nombre_completo = 'Juan Pérez',
+--     @direccion = 'Calle Principal 123',
+--     @telefono = '55551234',
+--     @correo_electronico = 'juan.perez@ejemplo.com',
+--     @fecha_entrega = '2024-02-15',
 --     @total_orden = 2500.50
 CREATE PROCEDURE sp_InsertarOrden
     @usuarios_idusuarios INT,
@@ -1660,14 +1683,14 @@ END
 GO
 
 -- Actualizar Orden
--- EXEC sp_ActualizarOrden 
+-- EXEC sp_ActualizarOrden
 --     @idOrden = 1,
---     @estados_idestados = 2, 
---     @nombre_completo = 'Juan Pérez Actualizado', 
---     @direccion = 'Nueva Dirección 456', 
---     @telefono = '55505678', 
---     @correo_electronico = 'juan.perez.nuevo@ejemplo.com', 
---     @fecha_entrega = '2024-02-20', 
+--     @estados_idestados = 2,
+--     @nombre_completo = 'Juan Pérez Actualizado',
+--     @direccion = 'Nueva Dirección 456',
+--     @telefono = '55505678',
+--     @correo_electronico = 'juan.perez.nuevo@ejemplo.com',
+--     @fecha_entrega = '2024-02-20',
 --     @total_orden = 2750.75
 CREATE PROCEDURE sp_ActualizarOrden
     @idOrden INT,
@@ -1695,8 +1718,8 @@ BEGIN
             RETURN;
         END
 
-        UPDATE Orden 
-        SET 
+        UPDATE Orden
+        SET
             estados_idestados = @estados_idestados,
             nombre_completo = @nombre_completo,
             direccion = @direccion,
@@ -1719,8 +1742,8 @@ END
 GO
 
 -- Cambiar Estado de Orden
--- EXEC sp_CambiarEstadoOrden 
---     @idOrden = 1, 
+-- EXEC sp_CambiarEstadoOrden
+--     @idOrden = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "En Proceso"
 CREATE PROCEDURE sp_CambiarEstadoOrden
     @idOrden INT,
@@ -1742,7 +1765,7 @@ BEGIN
             RETURN;
         END
 
-        UPDATE Orden 
+        UPDATE Orden
         SET estados_idestados = @estados_idestados
         WHERE idOrden = @idOrden;
 
@@ -1764,7 +1787,7 @@ CREATE PROCEDURE sp_LeerOrdenes
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             o.idOrden,
             o.nombre_completo,
             o.direccion,
@@ -1797,7 +1820,7 @@ CREATE PROCEDURE sp_LeerOrdenPorId
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             o.idOrden,
             o.nombre_completo,
             o.direccion,
@@ -1886,8 +1909,8 @@ BEGIN
 
         -- Validar que hay suficiente stock
         DECLARE @stock_disponible FLOAT
-        SELECT @stock_disponible = stock 
-        FROM Productos 
+        SELECT @stock_disponible = stock
+        FROM Productos
         WHERE idProductos = @Productos_idProductos
 
         IF @stock_disponible < @cantidad
@@ -1964,19 +1987,19 @@ BEGIN
         DECLARE @Productos_idProductos INT
         DECLARE @Orden_idOrden INT
 
-        SELECT 
+        SELECT
             @cantidad_anterior = cantidad,
             @Productos_idProductos = Productos_idProductos,
             @Orden_idOrden = Orden_idOrden
-        FROM OrdenDetalles 
+        FROM OrdenDetalles
         WHERE idOrdenDetalles = @idOrdenDetalles
 
         -- Validar stock disponible para el nuevo cambio
         DECLARE @diferencia_cantidad INT = @cantidad - @cantidad_anterior
         DECLARE @stock_disponible FLOAT
 
-        SELECT @stock_disponible = stock 
-        FROM Productos 
+        SELECT @stock_disponible = stock
+        FROM Productos
         WHERE idProductos = @Productos_idProductos
 
         IF @stock_disponible < @diferencia_cantidad
@@ -1989,7 +2012,7 @@ BEGIN
         DECLARE @subtotal FLOAT = @cantidad * @precio
 
         UPDATE OrdenDetalles
-        SET 
+        SET
             cantidad = @cantidad,
             precio = @precio,
             subtotal = @subtotal
@@ -2040,11 +2063,11 @@ BEGIN
         DECLARE @Productos_idProductos INT
         DECLARE @Orden_idOrden INT
 
-        SELECT 
+        SELECT
             @cantidad = cantidad,
             @Productos_idProductos = Productos_idProductos,
             @Orden_idOrden = Orden_idOrden
-        FROM OrdenDetalles 
+        FROM OrdenDetalles
         WHERE idOrdenDetalles = @idOrdenDetalles
 
         -- Devolver el stock al producto
@@ -2053,7 +2076,7 @@ BEGIN
         WHERE idProductos = @Productos_idProductos;
 
         -- Eliminar el detalle
-        DELETE FROM OrdenDetalles 
+        DELETE FROM OrdenDetalles
         WHERE idOrdenDetalles = @idOrdenDetalles;
 
         -- Actualizar el total de la orden
@@ -2084,7 +2107,7 @@ CREATE PROCEDURE sp_LeerOrdenDetalles
 AS
 BEGIN
     BEGIN TRY
-        SELECT 
+        SELECT
             od.idOrdenDetalles,
             od.Orden_idOrden,
             od.Productos_idProductos,
@@ -2116,11 +2139,11 @@ GO
 
 -- a. Total de productos activos con stock mayor a 0
 CREATE VIEW VistaProductosActivosConStockMayorACero AS
-SELECT 
+SELECT
     P.nombre AS NombreProducto,
     P.stock AS StockMayorACero
 FROM Productos P
-WHERE P.estados_idestados = (SELECT idestados FROM Estados WHERE nombre = 'Activo') 
+WHERE P.estados_idestados = (SELECT idestados FROM Estados WHERE nombre = 'Activo')
   AND P.stock > 0;
 GO
 
@@ -2128,13 +2151,13 @@ GO
 CREATE VIEW VistaTotalOrdenesAgosto2024 AS
 SELECT SUM(total_orden) AS TotalQuetzalesAgosto2024
 FROM Orden
-WHERE DATEPART(MONTH, fecha_creacion) = 8 
+WHERE DATEPART(MONTH, fecha_creacion) = 8
   AND DATEPART(YEAR, fecha_creacion) = 2024;
 GO
 
 -- c. Top 10 clientes con mayor consumo de órdenes
 CREATE VIEW VistaTop10ClientesMayorConsumo AS
-SELECT TOP 10 
+SELECT TOP 10
     C.idClientes,
     C.razon_social,
     C.nombre_comercial,
@@ -2163,7 +2186,7 @@ GO
 -- ######################################################################################################
 
 -- INSERCIÓN DE ESTADOS
-INSERT INTO Estados (nombre) VALUES 
+INSERT INTO Estados (nombre) VALUES
 ('Activo'),
 ('Inactivo'),
 ('Suspendido'),
@@ -2172,13 +2195,13 @@ INSERT INTO Estados (nombre) VALUES
 ('Tránsito');
 
 -- INSERCIÓN DE ROLES
-INSERT INTO Rol (nombre) VALUES 
+INSERT INTO Rol (nombre) VALUES
 ('Administrador'),
 ('Operador'),
 ('Cliente');
 
 -- INSERCIÓN DE CLIENTES
-INSERT INTO Clientes (razon_social, nombre_comercial, direccion_entrega, telefono, email) VALUES 
+INSERT INTO Clientes (razon_social, nombre_comercial, direccion_entrega, telefono, email) VALUES
 ('Distribuidora El Sol SA', 'El Sol', 'Zone 10 Ciudad de Guatemala', '22334455', 'info@elsol.com.gt'),
 ('Comercializadora La Luna', 'La Luna', '4ta Avenida zona 1', '22556677', 'ventas@laluna.com.gt'),
 ('Mayoreo Express SA', 'MayoreoExpress', 'Mixco Guatemala', '22222233', 'contacto@mayoreoexpress.com.gt'),
@@ -2196,8 +2219,8 @@ INSERT INTO Clientes (razon_social, nombre_comercial, direccion_entrega, telefon
 ('Distribuidora Nacional', 'NationalDist', 'Zona 13 Ciudad', '22556681', 'contacto@nationaldist.com.gt');
 
 -- INSERCIÓN DE USUARIOS
-INSERT INTO Usuarios (rol_idrol, estados_idestados, correo_electronico, nombre_completo, password, telefono, fecha_nacimiento, fecha_creacion, Clientes_idClientes) 
-VALUES 
+INSERT INTO Usuarios (rol_idrol, estados_idestados, correo_electronico, nombre_completo, password, telefono, fecha_nacimiento, fecha_creacion, Clientes_idClientes)
+VALUES
 -- Administradores
 (1, 1, 'admin1@admin1.com', 'Carlos Rodríguez', '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi', '55112233', '1985-05-15', GETDATE(), NULL),
 (1, 1, 'admin2@admin2.com', 'María González', '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi', '55445566', '1990-08-22', GETDATE(), NULL),
@@ -2223,7 +2246,7 @@ VALUES
 -- INSERCIÓN DE CATEGORÍAS DE PRODUCTOS
 INSERT INTO CategoriaProductos (
     usuarios_idusuarios, nombre, estados_idestados, fecha_creacion
-) VALUES 
+) VALUES
 (3, 'Electrónicos', 1, GETDATE()),
 (3, 'Hogar y Cocina', 1, GETDATE()),
 (4, 'Papelería', 1, GETDATE()),
@@ -2231,17 +2254,17 @@ INSERT INTO CategoriaProductos (
 
 -- INSERCIÓN DE PRODUCTOS
 INSERT INTO Productos (
-    CategoriaProductos_idCategoriaProductos, 
-    usuarios_idusuarios, 
-    nombre, 
-    marca, 
-    codigo, 
-    stock, 
-    estados_idestados, 
-    precio, 
-    fecha_creacion, 
+    CategoriaProductos_idCategoriaProductos,
+    usuarios_idusuarios,
+    nombre,
+    marca,
+    codigo,
+    stock,
+    estados_idestados,
+    precio,
+    fecha_creacion,
     foto
-) VALUES 
+) VALUES
 -- Electrónicos
 (1, 3, 'Smartphone X1', 'TechBrand', 'ELEC001', 50, 1, 2500.50, GETDATE(), 'https://technostore.es/wp-content/uploads/smartphone_v3_1.jpg'),
 (1, 3, 'Laptop Pro', 'ComputerCorp', 'ELEC002', 30, 1, 8999.99, GETDATE(), 'https://m.media-amazon.com/images/I/815Su-0wUDL._AC_SL1500_.jpg'),
@@ -2260,16 +2283,16 @@ INSERT INTO Productos (
 
 -- INSERCIÓN DE ÓRDENES
 INSERT INTO Orden (
-    usuarios_idusuarios, 
-    estados_idestados, 
-    fecha_creacion, 
-    nombre_completo, 
-    direccion, 
-    telefono, 
-    correo_electronico, 
-    fecha_entrega, 
+    usuarios_idusuarios,
+    estados_idestados,
+    fecha_creacion,
+    nombre_completo,
+    direccion,
+    telefono,
+    correo_electronico,
+    fecha_entrega,
     total_orden
-) VALUES 
+) VALUES
 -- Ordenes para Agosto de 2024
 (3, 1, '2024-08-01', 'Roberto Martínez', 'Zone 10 Ciudad de Guatemala', '33112233', 'cliente1@elsol.com', DATEADD(day, 5, '2024-08-01'), 5600.99),
 (4, 1, '2024-08-05', 'Sofía Ramírez', '4ta Avenida zona 1', '33445566', 'cliente2@laluna.com', DATEADD(day, 3, '2024-08-05'), 3200.50),
@@ -2296,12 +2319,12 @@ INSERT INTO Orden (
 
 -- INSERCIÓN DE DETALLES DE ÓRDENES
 INSERT INTO OrdenDetalles (
-    Orden_idOrden, 
-    Productos_idProductos, 
-    cantidad, 
-    precio, 
+    Orden_idOrden,
+    Productos_idProductos,
+    cantidad,
+    precio,
     subtotal
-) VALUES 
+) VALUES
 -- Detalles para órdendes de agosto
 (1, 1, 2, 2500.50, 5001.00),
 (1, 3, 1, 599.99, 599.99),
@@ -2365,7 +2388,7 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 -- ##################################### USO DE SP #####################################
 -- #####################################################################################
 
--- //////////////////////////////// ESTADOS ////////////////////////////////    
+-- //////////////////////////////// ESTADOS ////////////////////////////////
 -- Insertar Estado
 -- EXEC sp_InsertarEstado @nombre = 'Activo'
 
@@ -2378,7 +2401,7 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 -- Leer Estados
 -- EXEC sp_LeerEstados
 
--- //////////////////////////////// ROL ////////////////////////////////    
+-- //////////////////////////////// ROL ////////////////////////////////
 -- Insertar Rol
 -- EXEC sp_InsertarRol @nombre = 'Administrador'
 
@@ -2393,7 +2416,7 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 
 -- //////////////////////////////// CLIENTES ////////////////////////////////
 -- Insertar Cliente
--- EXEC sp_InsertarCliente 
+-- EXEC sp_InsertarCliente
 --     @razon_social = 'Empresa de Prueba S.A.',
 --     @nombre_comercial = 'Prueba Comercial',
 --     @direccion_entrega = 'Dirección de Entrega',
@@ -2401,7 +2424,7 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 --     @email = 'contacto@empresa.com'
 
 -- Actualizar Cliente
--- EXEC sp_ActualizarCliente 
+-- EXEC sp_ActualizarCliente
 --     @idClientes = 1,
 --     @razon_social = 'Empresa Actualizada S.A.',
 --     @nombre_comercial = 'Nuevo Nombre Comercial',
@@ -2413,7 +2436,7 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 -- EXEC sp_EliminarCliente @idClientes = 1
 
 -- Leer Clientes
--- EXEC sp_LeerClientes 
+-- EXEC sp_LeerClientes
 
 -- Leer Clientes Filtrados por empresa y/o correo
 -- EXEC sp_LeerClientesFiltrados @razon_social = 'Empresa'
@@ -2422,31 +2445,31 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 
 -- //////////////////////////////// USUARIOS ////////////////////////////////
 -- Insertar Usuario
--- EXEC sp_InsertarUsuario 
---     @rol_idrol = 1, 
---     @estados_idestados = 1, 
---     @correo_electronico = 'usuario@ejemplo.com', 
---     @nombre_completo = 'Juan Pérez', 
---     @password = 'contraseñaHasheada', 
---     @telefono = '123456789', 
+-- EXEC sp_InsertarUsuario
+--     @rol_idrol = 1,
+--     @estados_idestados = 1,
+--     @correo_electronico = 'usuario@ejemplo.com',
+--     @nombre_completo = 'Juan Pérez',
+--     @password = 'contraseñaHasheada',
+--     @telefono = '123456789',
 --     @fecha_nacimiento = '1990-01-01',
 --     @Clientes_idClientes = NULL
 
 -- Actualizar Usuario
--- EXEC sp_ActualizarUsuario 
+-- EXEC sp_ActualizarUsuario
 --     @idusuarios = 1,
---     @rol_idrol = 2, 
---     @estados_idestados = 2, 
---     @correo_electronico = 'nuevo.correo@ejemplo.com', 
---     @nombre_completo = 'Juan Pérez Actualizado', 
---     @telefono = '987654321', 
+--     @rol_idrol = 2,
+--     @estados_idestados = 2,
+--     @correo_electronico = 'nuevo.correo@ejemplo.com',
+--     @nombre_completo = 'Juan Pérez Actualizado',
+--     @telefono = '987654321',
 --     @fecha_nacimiento = '1990-01-01',
 --     @Clientes_idClientes = NULL
 
 -- Eliminar / Cambiar Estado de Usuario (Soft Delete)
 -- Para desactivar un usuario (cambiar a estado Inactivo)
--- EXEC sp_CambiarEstadoUsuario 
---     @idusuarios = 1, 
+-- EXEC sp_CambiarEstadoUsuario
+--     @idusuarios = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "Inactivo"
 
 -- Leer Usuarios
@@ -2457,29 +2480,29 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 -- EXEC sp_LeerUsuariosFiltrados @correo_electronico = 'ejemplo'
 -- EXEC sp_LeerUsuariosFiltrados @rol_nombre = 'Administrador'
 -- EXEC sp_LeerUsuariosFiltrados @estado_nombre = 'Activo'
--- EXEC sp_LeerUsuariosFiltrados 
---     @nombre_completo = 'Juan', 
---     @correo_electronico = 'ejemplo', 
---     @rol_nombre = 'Administrador', 
+-- EXEC sp_LeerUsuariosFiltrados
+--     @nombre_completo = 'Juan',
+--     @correo_electronico = 'ejemplo',
+--     @rol_nombre = 'Administrador',
 --     @estado_nombre = 'Activo'
 
 -- //////////////////////////////// CATEGORIA PRODUCTOS ////////////////////////////////
 -- Insertar Categoría de Productos
--- EXEC sp_InsertarCategoriaProductos 
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Electrónica', 
+-- EXEC sp_InsertarCategoriaProductos
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Electrónica',
 --     @estados_idestados = 1
 
 -- Actualizar Categoría de Productos
--- EXEC sp_ActualizarCategoriaProductos 
+-- EXEC sp_ActualizarCategoriaProductos
 --     @idCategoriaProductos = 1,
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Electrónica Actualizada', 
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Electrónica Actualizada',
 --     @estados_idestados = 1
 
 -- Eliminar / Cambiar Estado de Categoría de Productos
--- EXEC sp_CambiarEstadoCategoriaProductos 
---     @idCategoriaProductos = 1, 
+-- EXEC sp_CambiarEstadoCategoriaProductos
+--     @idCategoriaProductos = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "Inactivo"
 
 -- Leer Categorías de Productos
@@ -2489,40 +2512,40 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 -- EXEC sp_LeerCategoriaProductosFiltradas @nombre = 'Electrónica'
 -- EXEC sp_LeerCategoriaProductosFiltradas @usuario_nombre = 'Juan'
 -- EXEC sp_LeerCategoriaProductosFiltradas @estado_nombre = 'Activo'
--- EXEC sp_LeerCategoriaProductosFiltradas 
---     @nombre = 'Electrónica', 
---     @usuario_nombre = 'Juan', 
+-- EXEC sp_LeerCategoriaProductosFiltradas
+--     @nombre = 'Electrónica',
+--     @usuario_nombre = 'Juan',
 --     @estado_nombre = 'Activo'
 
 -- //////////////////////////////// PRODUCTOS ////////////////////////////////
 -- Insertar Producto
--- EXEC sp_InsertarProducto 
---     @CategoriaProductos_idCategoriaProductos = 1, 
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Laptop', 
---     @marca = 'Dell', 
---     @codigo = 'DELL-XPS-15', 
---     @stock = 10, 
---     @estados_idestados = 1, 
---     @precio = 1500.00, 
+-- EXEC sp_InsertarProducto
+--     @CategoriaProductos_idCategoriaProductos = 1,
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Laptop',
+--     @marca = 'Dell',
+--     @codigo = 'DELL-XPS-15',
+--     @stock = 10,
+--     @estados_idestados = 1,
+--     @precio = 1500.00,
 --     @foto = 'ruta/a/imagen.jpg'
 
 -- Actualizar Producto
--- EXEC sp_ActualizarProducto 
+-- EXEC sp_ActualizarProducto
 --     @idProductos = 1,
---     @CategoriaProductos_idCategoriaProductos = 1, 
---     @usuarios_idusuarios = 1, 
---     @nombre = 'Laptop Actualizada', 
---     @marca = 'Dell', 
---     @codigo = 'DELL-XPS-15-V2', 
---     @stock = 15, 
---     @estados_idestados = 1, 
---     @precio = 1600.00, 
+--     @CategoriaProductos_idCategoriaProductos = 1,
+--     @usuarios_idusuarios = 1,
+--     @nombre = 'Laptop Actualizada',
+--     @marca = 'Dell',
+--     @codigo = 'DELL-XPS-15-V2',
+--     @stock = 15,
+--     @estados_idestados = 1,
+--     @precio = 1600.00,
 --     @foto = 'ruta/a/nueva/imagen.jpg'
 
 -- Cambiar Estado de Producto
--- EXEC sp_CambiarEstadoProducto 
---     @idProductos = 1, 
+-- EXEC sp_CambiarEstadoProducto
+--     @idProductos = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "Inactivo"
 
 -- Leer Productos
@@ -2534,37 +2557,37 @@ SELECT * FROM VistaTop10ProductosMasVendidos;
 -- EXEC sp_LeerProductosFiltrados @codigo = 'DELL'
 -- EXEC sp_LeerProductosFiltrados @categoria_nombre = 'Electrónicos'
 -- EXEC sp_LeerProductosFiltrados @estado_nombre = 'Activo'
--- EXEC sp_LeerProductosFiltrados 
---     @nombre = 'Laptop', 
---     @marca = 'Dell', 
+-- EXEC sp_LeerProductosFiltrados
+--     @nombre = 'Laptop',
+--     @marca = 'Dell',
 --     @categoria_nombre = 'Electrónicos'
 
 -- //////////////////////////////// ORDEN ////////////////////////////////
 -- Insertar Orden
--- EXEC sp_InsertarOrden 
---     @usuarios_idusuarios = 1, 
---     @estados_idestados = 1, 
---     @nombre_completo = 'Juan Pérez', 
---     @direccion = 'Calle Principal 123', 
---     @telefono = '55551234', 
---     @correo_electronico = 'juan.perez@ejemplo.com', 
---     @fecha_entrega = '2024-02-15', 
+-- EXEC sp_InsertarOrden
+--     @usuarios_idusuarios = 1,
+--     @estados_idestados = 1,
+--     @nombre_completo = 'Juan Pérez',
+--     @direccion = 'Calle Principal 123',
+--     @telefono = '55551234',
+--     @correo_electronico = 'juan.perez@ejemplo.com',
+--     @fecha_entrega = '2024-02-15',
 --     @total_orden = 2500.50
 
 -- Actualizar Orden
--- EXEC sp_ActualizarOrden 
+-- EXEC sp_ActualizarOrden
 --     @idOrden = 1,
---     @estados_idestados = 2, 
---     @nombre_completo = 'Juan Pérez Actualizado', 
---     @direccion = 'Nueva Dirección 456', 
---     @telefono = '55505678', 
---     @correo_electronico = 'juan.perez.nuevo@ejemplo.com', 
---     @fecha_entrega = '2024-02-20', 
+--     @estados_idestados = 2,
+--     @nombre_completo = 'Juan Pérez Actualizado',
+--     @direccion = 'Nueva Dirección 456',
+--     @telefono = '55505678',
+--     @correo_electronico = 'juan.perez.nuevo@ejemplo.com',
+--     @fecha_entrega = '2024-02-20',
 --     @total_orden = 2750.75
 
 -- Cambiar Estado de Orden
--- EXEC sp_CambiarEstadoOrden 
---     @idOrden = 1, 
+-- EXEC sp_CambiarEstadoOrden
+--     @idOrden = 1,
 --     @estados_idestados = 2  -- Suponiendo que 2 es el ID de "En Proceso"
 
 -- Leer Ordenes

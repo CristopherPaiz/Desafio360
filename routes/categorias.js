@@ -27,6 +27,31 @@ router.get('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
   }
 })
 
+// Obtener todos las categorías: sp_LeerCategoriaProductosActivos
+// localhost:3000/categorias/activas
+router.get('/activas', Autorizar(['Todos']), async (req, res) => {
+  try {
+    const productos = await conexionBD.query(
+      'sp_LeerCategoriaProductosActivos',
+      {
+        type: conexionBD.QueryTypes.SELECT
+      }
+    )
+
+    // ERRORES
+    if (!productos.length) {
+      throw TipoError('categorías', 'NO_RESOURCES')
+    }
+
+    // Respuesta exitosa
+    res.json(productos)
+  } catch (error) {
+    // Capturar los errores de la BD como los que retorna los SP o del servidor
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
+  }
+})
+
 // Leer categorias Filtradas: sp_LeerCategoriaProductosFiltradas
 // localhost:3000/categorias/filtro?nombre=Electrónicos
 // localhost:3000/categorias/filtro?usuario_nombre=Roberto Martínez
