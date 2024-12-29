@@ -875,7 +875,7 @@ GO
 
 -- Leer Usuario para Login
 -- EXEC sp_ObtenerDatosLogin @correo_electronico = 'admin1@admin1.com'
--- UPDATE Usuarios SET password = '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi' WHERE idusuarios = 1;  // contraseña hasheada para admin123
+-- UPDATE Usuarios SET password = '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi' WHERE idusuarios = 7;  // contraseña hasheada para admin123
 CREATE PROCEDURE sp_ObtenerDatosLogin
     @correo_electronico NVARCHAR(90)
 AS
@@ -1124,6 +1124,7 @@ BEGIN
         RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH
 END
+GO
 
 -- Leer Categorías de Productos Filtradas
 -- EXEC sp_LeerCategoriaProductosFiltradas @nombre = 'Electrónicos'
@@ -1637,6 +1638,7 @@ BEGIN
         RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH
 END
+GO
 
 -- #######################################################################################################################
 -- ###################################################### SP ORDEN #######################################################
@@ -2254,24 +2256,24 @@ INSERT INTO Usuarios (rol_idrol, estados_idestados, correo_electronico, nombre_c
 VALUES
 -- Administradores
 (1, 1, 'admin1@admin1.com', 'Carlos Rodríguez', '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi', '55112233', '1985-05-15', GETDATE(), NULL),
-(1, 1, 'admin2@admin2.com', 'María González', '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi', '55445566', '1990-08-22', GETDATE(), NULL),
+(1, 1, 'admin2@admin2.com', 'María González', 'admin123', '55445566', '1990-08-22', GETDATE(), NULL),
 
 -- Operadores
-(2, 1, 'operador1@operador1.com', 'Roberto Martínez', 'operador123', '33112233', '1975-07-20', GETDATE(), 1),
+(2, 1, 'operador1@operador1.com', 'Roberto Martínez', '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi', '33112233', '1975-07-20', GETDATE(), 1),
 (2, 1, 'operador2@operador2.com', 'Sofía Ramírez', 'operador123', '33445566', '1980-12-30', GETDATE(), 2),
 (2, 1, 'operador3@operador3.com', 'Juan Pérez', 'operador123', '33112234', '1982-03-25', GETDATE(), 5),
 (2, 1, 'operador4@operador4.com', 'Ana López', 'operador123', '33445567', '1988-11-15', GETDATE(), 6),
 
 -- Clientes
-(2, 1, 'cliente1@cliente1.com', 'Luis Hernández', 'cliente123', '33112235', '1983-06-10', GETDATE(), 7),
-(2, 1, 'cliente2@cliente2.com', 'María Sánchez', 'cliente123', '33445568', '1979-09-25', GETDATE(), 8),
-(2, 1, 'cliente3@cliente3.com', 'Pedro Ruiz', 'cliente123', '33112236', '1987-04-15', GETDATE(), 9),
-(2, 1, 'cliente4@cliente4.com', 'Carmen Morales', 'cliente123', '33445569', '1981-11-05', GETDATE(), 10),
-(2, 1, 'cliente5@cliente5.com', 'Jorge Mendoza', 'cliente123', '33112237', '1986-08-30', GETDATE(), 11),
-(2, 1, 'cliente6@cliente6.com', 'Andrea Guzmán', 'cliente123', '33445570', '1984-02-20', GETDATE(), 12),
-(2, 1, 'cliente7@cliente7.com', 'Ricardo Flores', 'cliente123', '33112238', '1980-07-12', GETDATE(), 13),
-(2, 1, 'cliente8@cliente8.com', 'Lucia Torres', 'cliente123', '33445571', '1989-03-18', GETDATE(), 14),
-(2, 1, 'cliente9@cliente9.com', 'Miguel Castillo', 'cliente123', '33112239', '1982-10-05', GETDATE(), 15);
+(3, 1, 'cliente1@cliente1.com', 'Luis Hernández', '$2a$10$Qrq5pN1.zlScIUGTCDMW0uuit/8MQPGvEd0p2igZiBqDns1PULydi', '33112235', '1983-06-10', GETDATE(), 7),
+(3, 1, 'cliente2@cliente2.com', 'María Sánchez', 'cliente123', '33445568', '1979-09-25', GETDATE(), 8),
+(3, 1, 'cliente3@cliente3.com', 'Pedro Ruiz', 'cliente123', '33112236', '1987-04-15', GETDATE(), 9),
+(3, 1, 'cliente4@cliente4.com', 'Carmen Morales', 'cliente123', '33445569', '1981-11-05', GETDATE(), 10),
+(3, 1, 'cliente5@cliente5.com', 'Jorge Mendoza', 'cliente123', '33112237', '1986-08-30', GETDATE(), 11),
+(3, 1, 'cliente6@cliente6.com', 'Andrea Guzmán', 'cliente123', '33445570', '1984-02-20', GETDATE(), 12),
+(3, 1, 'cliente7@cliente7.com', 'Ricardo Flores', 'cliente123', '33112238', '1980-07-12', GETDATE(), 13),
+(3, 1, 'cliente8@cliente8.com', 'Lucia Torres', 'cliente123', '33445571', '1989-03-18', GETDATE(), 14),
+(3, 1, 'cliente9@cliente9.com', 'Miguel Castillo', 'cliente123', '33112239', '1982-10-05', GETDATE(), 15);
 
 
 -- INSERCIÓN DE CATEGORÍAS DE PRODUCTOS
