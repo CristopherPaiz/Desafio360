@@ -54,8 +54,17 @@ router.post('/login', async (req, res) => {
       }
     )
 
+    // Recuperar datos del usuario sp_LeerUsuarioPorID
+    const [datos] = await conexionBD.query(
+      'EXEC sp_LeerUsuarioPorID @UsuarioID = :id',
+      {
+        replacements: { id: usuario.id },
+        type: conexionBD.QueryTypes.SELECT
+      }
+    )
+
     // Enviar token al cliente
-    res.json({ codigo: 200, mensaje: token })
+    res.json({ codigo: 200, mensaje: token, data: datos })
   } catch (error) {
     console.error(error)
     res.status(500).json({ mensaje: 'Error interno del servidor' })

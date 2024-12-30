@@ -825,6 +825,39 @@ BEGIN
 END
 GO
 
+-- Leer un Usuario por ID
+-- EXEC sp_LeerUsuarioPorID @UsuarioID = 1
+CREATE PROCEDURE sp_LeerUsuarioPorID
+    @UsuarioID INT
+AS
+BEGIN
+    BEGIN TRY
+        SELECT
+            u.idusuarios,
+            u.correo_electronico,
+            u.nombre_completo,
+            u.telefono,
+            u.fecha_nacimiento,
+            e.nombre AS estado,
+            c.razon_social AS cliente
+        FROM Usuarios u
+        INNER JOIN Estados e ON u.estados_idestados = e.idestados
+        LEFT JOIN Clientes c ON u.Clientes_idClientes = c.idClientes
+        WHERE u.idusuarios = @UsuarioID -- Filtro por ID del usuario
+        ORDER BY u.nombre_completo;
+    END TRY
+    BEGIN CATCH
+        -- Captura y lanza errores
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+        DECLARE @ErrorState INT = ERROR_STATE();
+
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END
+GO
+
+
 -- Leer Usuarios Filtrados
 -- EXEC sp_LeerUsuariosFiltrados @nombre_completo = 'Juan'
 -- EXEC sp_LeerUsuariosFiltrados @correo_electronico = 'admin1@admin1.com'
