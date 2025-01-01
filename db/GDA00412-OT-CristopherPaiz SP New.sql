@@ -549,13 +549,15 @@ BEGIN
 END
 GO
 
--- Leer Clientes Filtrados por empresa y/o correo
+-- Leer Clientes Filtrados por empresa, correo y/o ID del cliente
 -- EXEC sp_LeerClientesFiltrados @razon_social = 'Empresa'
 -- EXEC sp_LeerClientesFiltrados @email = 'contacto'
 -- EXEC sp_LeerClientesFiltrados @razon_social = 'Empresa', @email = 'contacto'
+-- EXEC sp_LeerClientesFiltrados @idCliente = 1
 CREATE PROCEDURE sp_LeerClientesFiltrados
     @razon_social NVARCHAR(245) = NULL,
-    @email NVARCHAR(45) = NULL
+    @email NVARCHAR(45) = NULL,
+    @idCliente INT = NULL
 AS
 BEGIN
     BEGIN TRY
@@ -570,6 +572,7 @@ BEGIN
         WHERE
             (@razon_social IS NULL OR razon_social LIKE '%' + @razon_social + '%')
             AND (@email IS NULL OR email LIKE '%' + @email + '%')
+            AND (@idCliente IS NULL OR idClientes = @idCliente)
         ORDER BY razon_social;
     END TRY
     BEGIN CATCH
@@ -581,6 +584,7 @@ BEGIN
     END CATCH
 END
 GO
+
 
 -- #######################################################################################################################
 -- ##################################################### SP USUARIOS #####################################################

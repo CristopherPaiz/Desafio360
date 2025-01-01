@@ -31,6 +31,7 @@ router.get('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
 // localhost:3000/clientes/filtro?razon=Comercio Global
 // localhost:3000/clientes/filtro?email=info@globaltrade.com.gt
 // localhost:3000/clientes/filtro?razon=comercio&email=info@globaltrade.com.gt
+// localhost:3000/clientes/filtro?id=7
 router.get(
   '/filtro',
   Autorizar(['Administrador', 'Operador']),
@@ -39,7 +40,8 @@ router.get(
       // Capturar los filtros de la URL
       const filtros = {
         razon_social: req.query.razon,
-        email: req.query.email
+        email: req.query.email,
+        idCliente: req.query.id
       }
 
       const params = {}
