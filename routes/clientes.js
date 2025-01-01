@@ -32,60 +32,56 @@ router.get('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
 // localhost:3000/clientes/filtro?email=info@globaltrade.com.gt
 // localhost:3000/clientes/filtro?razon=comercio&email=info@globaltrade.com.gt
 // localhost:3000/clientes/filtro?id=7
-router.get(
-  '/filtro',
-  Autorizar(['Administrador', 'Operador']),
-  async (req, res) => {
-    try {
-      // Capturar los filtros de la URL
-      const filtros = {
-        razon_social: req.query.razon,
-        email: req.query.email,
-        idCliente: req.query.id
-      }
-
-      const params = {}
-      const condiciones = []
-
-      // Recorrer los filtros y agregarlos a la consulta
-      for (const [campo, valor] of Object.entries(filtros)) {
-        if (valor) {
-          params[campo] = valor
-          condiciones.push(`@${campo} = :${campo}`)
-        }
-      }
-
-      // Si no se proporcionan filtros pues le avisamos al usuario que no se proporcionaron
-      if (condiciones.length === 0) {
-        throw TipoError(
-          'No se proporcionaron parámetros válidos de filtro',
-          'GENERAL_ERROR'
-        )
-      }
-
-      // Construimos la query y ejecutamos el SP
-      const clientes = await conexionBD.query(
-        `EXEC sp_LeerClientesFiltrados ${condiciones.join(', ')}`,
-        {
-          replacements: params,
-          type: conexionBD.QueryTypes.SELECT
-        }
-      )
-
-      // Si no hay clientes, lanzamos un error
-      if (!clientes.length) {
-        throw TipoError('clientes', 'NO_RESOURCES')
-      }
-
-      // Respuesta exitosa
-      res.json(clientes)
-    } catch (error) {
-      // Capturar los errores de la BD como los que retorna los SP o del servidor
-      const ErrorDelSistema = error?.original?.message
-      RetornarError(res, error, ErrorDelSistema)
+router.get('/filtro', Autorizar(['Todos']), async (req, res) => {
+  try {
+    // Capturar los filtros de la URL
+    const filtros = {
+      razon_social: req.query.razon,
+      email: req.query.email,
+      idCliente: req.query.id
     }
+
+    const params = {}
+    const condiciones = []
+
+    // Recorrer los filtros y agregarlos a la consulta
+    for (const [campo, valor] of Object.entries(filtros)) {
+      if (valor) {
+        params[campo] = valor
+        condiciones.push(`@${campo} = :${campo}`)
+      }
+    }
+
+    // Si no se proporcionan filtros pues le avisamos al usuario que no se proporcionaron
+    if (condiciones.length === 0) {
+      throw TipoError(
+        'No se proporcionaron parámetros válidos de filtro',
+        'GENERAL_ERROR'
+      )
+    }
+
+    // Construimos la query y ejecutamos el SP
+    const clientes = await conexionBD.query(
+      `EXEC sp_LeerClientesFiltrados ${condiciones.join(', ')}`,
+      {
+        replacements: params,
+        type: conexionBD.QueryTypes.SELECT
+      }
+    )
+
+    // Si no hay clientes, lanzamos un error
+    if (!clientes.length) {
+      throw TipoError('clientes', 'NO_RESOURCES')
+    }
+
+    // Respuesta exitosa
+    res.json(clientes)
+  } catch (error) {
+    // Capturar los errores de la BD como los que retorna los SP o del servidor
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
   }
-)
+})
 
 // /////////////////////////// POST /////////////////////////////
 

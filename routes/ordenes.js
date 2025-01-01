@@ -99,7 +99,7 @@ router.get(
 //     }
 //   ]
 // }
-router.post('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
+router.post('/', Autorizar(['Todos']), async (req, res) => {
   const transaccion = await conexionBD.transaction()
 
   try {
