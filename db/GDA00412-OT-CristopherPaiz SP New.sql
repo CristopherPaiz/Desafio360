@@ -1450,6 +1450,7 @@ GO
 -- EXEC sp_LeerProductosFiltrados @codigo = 'DELL'
 -- EXEC sp_LeerProductosFiltrados @categoria_nombre = 'Electrónicos'
 -- EXEC sp_LeerProductosFiltrados @estado_nombre = 'Activo'
+-- EXEC sp_LeerProductosFiltrados @idCategoria = 4
 -- EXEC sp_LeerProductosFiltrados
 --     @nombre = 'Laptop',
 --     @marca = 'Dell',
@@ -1459,7 +1460,8 @@ CREATE PROCEDURE sp_LeerProductosFiltrados
     @marca NVARCHAR(45) = NULL,
     @codigo NVARCHAR(45) = NULL,
     @categoria_nombre NVARCHAR(45) = NULL,
-    @estado_nombre NVARCHAR(45) = NULL
+    @estado_nombre NVARCHAR(45) = NULL,
+    @idCategoria INT = NULL
 AS
 BEGIN
     BEGIN TRY
@@ -1484,6 +1486,7 @@ BEGIN
             AND (@codigo IS NULL OR p.codigo LIKE '%' + @codigo + '%')
             AND (@categoria_nombre IS NULL OR cp.nombre = @categoria_nombre)
             AND (@estado_nombre IS NULL OR e.nombre = @estado_nombre)
+            AND (@idCategoria IS NULL OR cp.idCategoriaProductos = @idCategoria)
         ORDER BY p.nombre;
     END TRY
     BEGIN CATCH

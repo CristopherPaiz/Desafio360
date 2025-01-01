@@ -85,6 +85,7 @@ router.get('/id/:id', Autorizar(['Todos']), async (req, res) => {
 // localhost:3000/productos/filtro?marca=Master
 // localhost:3000/productos/filtro?nombre=Laptop
 // localhost:3000/productos/filtro?marca=Master&nombre=x5
+// localhost:3000/productos/filtro?idCategoria=4
 router.get('/filtro', Autorizar(['Todos']), async (req, res) => {
   try {
     // Capturar los filtros de la URL
@@ -93,7 +94,8 @@ router.get('/filtro', Autorizar(['Todos']), async (req, res) => {
       marca: req.query.marca,
       codigo: req.query.codigo,
       categoria_nombre: req.query.categoria_nombre,
-      estado_nombre: req.query.estado_nombre
+      estado_nombre: req.query.estado_nombre,
+      idCategoria: req.query.idCategoria
     }
 
     const params = {}
