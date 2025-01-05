@@ -1886,6 +1886,41 @@ BEGIN
 END
 GO
 
+-- Leer Órdenes con Filtro por ID de Usuario
+-- EXEC sp_LeerUsuarios
+-- EXEC sp_LeerOrdenesPorUsuario @idUsuario = NULL
+CREATE PROCEDURE sp_LeerOrdenesPorUsuario
+    @idUsuario INT = NULL -- Parámetro opcional
+AS
+BEGIN
+    BEGIN TRY
+        SELECT
+            o.idOrden,
+            o.nombre_completo,
+            o.direccion,
+            o.telefono,
+            o.correo_electronico,
+            o.fecha_creacion,
+            o.fecha_entrega,
+            o.total_orden,
+            u.nombre_completo AS usuario,
+            e.nombre AS estado
+        FROM Orden o
+        INNER JOIN Usuarios u ON o.usuarios_idusuarios = u.idusuarios
+        INNER JOIN Estados e ON o.estados_idestados = e.idestados
+        WHERE (@idUsuario IS NULL OR u.idusuarios = @idUsuario) -- Filtro opcional
+        ORDER BY o.fecha_creacion DESC;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+        DECLARE @ErrorState INT = ERROR_STATE();
+
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END
+GO
+
 -- Leer Orden por ID
 -- EXEC sp_LeerOrdenPorId @idOrden = 1
 CREATE PROCEDURE sp_LeerOrdenPorId

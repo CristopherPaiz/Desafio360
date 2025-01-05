@@ -29,48 +29,86 @@ router.get('/', Autorizar(['Administrador', 'Operador']), async (req, res) => {
   }
 })
 
+// Obtener todas las órdenes de un usuario: sp_LeerOrdenesPorUsuario
+// localhost:3000/ordenes/user/7
+router.get('/user/:id', Autorizar(['Todos']), async (req, res) => {
+  try {
+    // Obtener el ID del usuario desde los parámetros de la URL
+    const { id } = req.params
+
+    if (!id) {
+      throw TipoError(
+        'idUsuario',
+        'BAD_REQUEST',
+        'El ID del usuario es obligatorio'
+      )
+    }
+
+    // Llamada al procedimiento almacenado con el ID del usuario
+    const ordenes = await conexionBD.query(
+      'EXEC sp_LeerOrdenesPorUsuario @idUsuario = :idUsuario',
+      {
+        type: conexionBD.QueryTypes.SELECT,
+        replacements: { idUsuario: id } // Reemplazo seguro del parámetro
+      }
+    )
+
+    // Validación de recursos encontrados
+    if (!ordenes.length) {
+      throw TipoError(
+        'ordenes',
+        'NO_RESOURCES',
+        'No se encontraron órdenes para este usuario'
+      )
+    }
+
+    // Respuesta exitosa
+    res.json(ordenes)
+  } catch (error) {
+    // Manejo de errores
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
+  }
+})
+
 // Obtener todos las ordenes: sp_LeerOrdenPorId
 // localhost:3000/ordenes/23
-router.get(
-  '/:id',
-  Autorizar(['Administrador', 'Operador']),
-  async (req, res) => {
-    try {
-      const { id } = req.params
+router.get('/:id', Autorizar(['Todos']), async (req, res) => {
+  try {
+    const { id } = req.params
 
-      const orden = await conexionBD.query(
-        'EXEC sp_LeerOrdenPorId @idOrden = :id',
-        {
-          replacements: { id },
-          type: conexionBD.QueryTypes.SELECT
-        }
-      )
-
-      if (!orden.length) {
-        throw TipoError('orden', 'NOT_FOUND')
+    const orden = await conexionBD.query(
+      'EXEC sp_LeerOrdenPorId @idOrden = :id',
+      {
+        replacements: { id },
+        type: conexionBD.QueryTypes.SELECT
       }
+    )
 
-      // Obtener detalles de la orden
-      const detalles = await conexionBD.query(
-        'EXEC sp_LeerOrdenDetalles @Orden_idOrden = :id',
-        {
-          replacements: { id },
-          type: conexionBD.QueryTypes.SELECT
-        }
-      )
-
-      const ordenCompleta = {
-        ...orden[0],
-        detalles
-      }
-
-      res.json(ordenCompleta)
-    } catch (error) {
-      const ErrorDelSistema = error?.original?.message
-      RetornarError(res, error, ErrorDelSistema)
+    if (!orden.length) {
+      throw TipoError('orden', 'NOT_FOUND')
     }
+
+    // Obtener detalles de la orden
+    const detalles = await conexionBD.query(
+      'EXEC sp_LeerOrdenDetalles @Orden_idOrden = :id',
+      {
+        replacements: { id },
+        type: conexionBD.QueryTypes.SELECT
+      }
+    )
+
+    const ordenCompleta = {
+      ...orden[0],
+      detalles
+    }
+
+    res.json(ordenCompleta)
+  } catch (error) {
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
   }
-)
+})
 
 // /////////////////////////// POST /////////////////////////////
 
