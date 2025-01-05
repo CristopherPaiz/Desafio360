@@ -438,18 +438,16 @@ router.post(
 router.put(
   '/:id',
   Autorizar(['Administrador', 'Operador']),
+  upload.single('imagen'), // Middleware para manejar la carga de una imagen
   async (req, res) => {
     try {
-      // Capturar el id del producto
       const { id } = req.params
 
-      // Construir los parámetros dinámicamente
-      const parametros = {
-        idProductos: id
-      }
+      // Objeto para parámetros dinámicos y condiciones del SP
+      const parametros = { idProductos: id }
       const condiciones = ['@idProductos = :idProductos']
 
-      // Lista de campos permitidos para actualización
+      // Lista de campos permitidos
       const camposPermitidos = [
         'CategoriaProductos_idCategoriaProductos',
         'usuarios_idusuarios',
@@ -462,6 +460,13 @@ router.put(
         'foto'
       ]
 
+      // Si se envió una nueva imagen, procesarla
+      if (req.file) {
+        const resultadoImagen = await subirImagen(req.file) // Subir nueva imagen
+        parametros.foto = resultadoImagen.url // Agregar la nueva URL de la imagen
+        condiciones.push('@foto = :foto')
+      }
+
       // Recorrer los datos del body y agregarlos a los parámetros
       for (const [campo, valor] of Object.entries(req.body)) {
         if (camposPermitidos.includes(campo) && valor !== undefined) {
@@ -470,7 +475,7 @@ router.put(
         }
       }
 
-      // Si no se proporcionan parámetros para actualizar, devolver un error
+      // Si no se proporcionan parámetros para actualizar, lanzar error
       if (condiciones.length === 1) {
         throw TipoError(
           'No se proporcionaron parámetros para actualizar el producto',
@@ -478,10 +483,8 @@ router.put(
         )
       }
 
-      // Construir la consulta SQL para ejecutar el SP
+      // Construir y ejecutar la consulta SQL
       const consultaSQL = `EXEC sp_ActualizarProducto ${condiciones.join(', ')}`
-
-      // Ejecutar el SP con los parámetros
       const producto = await conexionBD.query(consultaSQL, {
         replacements: parametros,
         type: conexionBD.QueryTypes.SELECT
@@ -495,9 +498,8 @@ router.put(
       // Respuesta exitosa
       res.json(producto)
     } catch (error) {
-      // Capturar los errores de la BD como los que retorna los SP o del servidor
-      const ErroDelSistema = error?.original?.message
-      RetornarError(res, error, ErroDelSistema)
+      const ErrorDelSistema = error?.original?.message
+      RetornarError(res, error, ErrorDelSistema)
     }
   }
 )
