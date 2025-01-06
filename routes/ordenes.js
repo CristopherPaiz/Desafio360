@@ -455,67 +455,63 @@ router.put(
 // ⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠ DELETE  ⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠
 // Eliminar una orden: sp_EliminarOrden
 // localhost:3000/ordenes/23
-router.delete(
-  '/:id',
-  Autorizar(['Administrador', 'Operador']),
-  async (req, res) => {
-    const transaccion = await conexionBD.transaction()
+router.delete('/:id', Autorizar(['Todos']), async (req, res) => {
+  const transaccion = await conexionBD.transaction()
 
-    try {
-      const { id } = req.params
+  try {
+    const { id } = req.params
 
-      // Si no hay ID es error
-      if (!id) {
-        throw TipoError('ID', 'REQUIRED_FIELD')
+    // Si no hay ID es error
+    if (!id) {
+      throw TipoError('ID', 'REQUIRED_FIELD')
+    }
+
+    // Primero obtener los detalles para devolver stock
+    const detalles = await conexionBD.query(
+      'EXEC sp_LeerOrdenDetalles @Orden_idOrden = :id',
+      {
+        replacements: { id },
+        type: conexionBD.QueryTypes.SELECT,
+        transaction: transaccion
       }
+    )
 
-      // Primero obtener los detalles para devolver stock
-      const detalles = await conexionBD.query(
-        'EXEC sp_LeerOrdenDetalles @Orden_idOrden = :id',
+    // Eliminar cada detalle para devolver stock
+    for (const detalle of detalles) {
+      await conexionBD.query(
+        'EXEC sp_EliminarOrdenDetalle @idOrdenDetalles = :id',
         {
-          replacements: { id },
+          replacements: { id: detalle.idOrdenDetalles },
           type: conexionBD.QueryTypes.SELECT,
           transaction: transaccion
         }
       )
-
-      // Eliminar cada detalle para devolver stock
-      for (const detalle of detalles) {
-        await conexionBD.query(
-          'EXEC sp_EliminarOrdenDetalle @idOrdenDetalles = :id',
-          {
-            replacements: { id: detalle.idOrdenDetalles },
-            type: conexionBD.QueryTypes.SELECT,
-            transaction: transaccion
-          }
-        )
-      }
-
-      // Finalmente eliminar la orden
-      await conexionBD.query('EXEC sp_EliminarOrden @idOrden = :id', {
-        replacements: { id },
-        type: conexionBD.QueryTypes.SELECT,
-        transaction: transaccion
-      })
-
-      await transaccion.commit()
-
-      // Obtener lista actualizada de órdenes
-      const ordenesActualizadas = await conexionBD.query('sp_LeerOrdenes', {
-        type: conexionBD.QueryTypes.SELECT
-      })
-
-      // Emitir WbeSocket
-      io.emit('ordenes:deleted', { idOrden: id })
-      io.emit('ordenes:list', ordenesActualizadas)
-
-      res.json({ mensaje: 'Orden eliminada correctamente' })
-    } catch (error) {
-      await transaccion.rollback()
-      const ErrorDelSistema = error?.original?.message
-      RetornarError(res, error, ErrorDelSistema)
     }
+
+    // Finalmente eliminar la orden
+    await conexionBD.query('EXEC sp_EliminarOrden @idOrden = :id', {
+      replacements: { id },
+      type: conexionBD.QueryTypes.SELECT,
+      transaction: transaccion
+    })
+
+    await transaccion.commit()
+
+    // Obtener lista actualizada de órdenes
+    const ordenesActualizadas = await conexionBD.query('sp_LeerOrdenes', {
+      type: conexionBD.QueryTypes.SELECT
+    })
+
+    // Emitir WbeSocket
+    io.emit('ordenes:deleted', { idOrden: id })
+    io.emit('ordenes:list', ordenesActualizadas)
+
+    res.json({ mensaje: 'Orden eliminada correctamente' })
+  } catch (error) {
+    await transaccion.rollback()
+    const ErrorDelSistema = error?.original?.message
+    RetornarError(res, error, ErrorDelSistema)
   }
-)
+})
 
 export default router
